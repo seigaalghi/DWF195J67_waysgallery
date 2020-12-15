@@ -9,8 +9,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Hire.belongsTo(models.User, { as: 'hires', foreignKey: 'orderBy' });
-      Hire.belongsTo(models.User, { as: 'offers', foreignKey: 'orderTo' });
+      Hire.belongsTo(models.User, { as: 'orderedBy', foreignKey: 'orderBy' });
+      Hire.belongsTo(models.User, { as: 'offeredTo', foreignKey: 'orderTo' });
     }
   }
   Hire.init(

@@ -167,11 +167,25 @@ exports.loadUser = async (req, res) => {
         },
         {
           model: Hire,
-          as: 'hires',
+          as: 'offers',
+          include: [
+            {
+              model: User,
+              as: 'offeredTo',
+              attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
+            },
+          ],
         },
         {
           model: Hire,
-          as: 'offers',
+          as: 'orders',
+          include: [
+            {
+              model: User,
+              as: 'orderedBy',
+              attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
+            },
+          ],
         },
         {
           model: Art,

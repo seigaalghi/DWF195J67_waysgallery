@@ -21,16 +21,17 @@ function App() {
   }, []);
   return (
     <Provider store={store}>
-      <Router>
-        <Switch>
-          <Route path='/landing' exact component={Background} />
-          <div className='App-container'>
+      <div className='App-container'>
+        <Router>
+          <Switch>
+            <Route path='/landing' exact component={Background} />
+
             <PrivateRoute path='/' exact component={Home} />
             <PrivateRoute path='/profile/:id' exact component={Profile} />
             <PrivateRoute path='/order' exact component={Project} />
-          </div>
-        </Switch>
-      </Router>
+          </Switch>
+        </Router>
+      </div>
     </Provider>
   );
 }

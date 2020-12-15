@@ -85,11 +85,11 @@ exports.putUser = async (req, res) => {
           },
           {
             model: Hire,
-            as: 'hires',
+            as: 'offers',
           },
           {
             model: Hire,
-            as: 'offers',
+            as: 'orders',
           },
           {
             model: Art,
@@ -130,11 +130,11 @@ exports.getUsers = async (req, res) => {
         },
         {
           model: Hire,
-          as: 'hires',
+          as: 'offers',
         },
         {
           model: Hire,
-          as: 'offers',
+          as: 'orders',
         },
         {
           model: Art,
@@ -190,11 +190,11 @@ exports.loadUserById = async (req, res) => {
         },
         {
           model: Hire,
-          as: 'hires',
+          as: 'offers',
         },
         {
           model: Hire,
-          as: 'offers',
+          as: 'orders',
         },
         {
           model: Art,

@@ -34,7 +34,7 @@ const Profile = ({ loadProfileById, profile: { loading, profile }, auth }) => {
       <div className='project'>
         <h2>{auth.user.id === id ? 'My Works' : `${profile.name}'s Works`}</h2>
         {profile.posts.length > 0
-          ? profile.posts.map((post) => post.photos.map((photo) => <img src={`/api/v1/files/${photo.photo}`} alt='photo' />))
+          ? profile.posts.map((post) => post.photos.map((photo) => <img src={`/api/v1/files/${photo.photo}`} alt='photo' key={photo.id} />))
           : null}
       </div>
     </div>

@@ -11,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       User.hasMany(models.Post, { as: 'posts', foreignKey: 'userId' });
       User.hasMany(models.Art, { as: 'arts', foreignKey: 'userId' });
-      User.hasMany(models.Hire, { as: 'hires', foreignKey: 'orderBy' });
-      User.hasMany(models.Hire, { as: 'offers', foreignKey: 'orderTo' });
+      User.hasMany(models.Hire, { as: 'offers', foreignKey: 'orderBy' });
+      User.hasMany(models.Hire, { as: 'orders', foreignKey: 'orderTo' });
     }
   }
   User.init(

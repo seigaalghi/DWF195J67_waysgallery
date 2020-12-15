@@ -132,8 +132,12 @@ body {
 }
 
 .landing-container {
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  right: 0px;
+  left: 0px;
   background-image: url(./images/Assets.svg), url(./images/Vector1.svg), url(./images/Vector2.svg), url(./images/Vector3.svg);
-  height: 100vh;
   background-repeat: no-repeat;
   background-position: 80%, top left, bottom left, bottom right;
   .text {

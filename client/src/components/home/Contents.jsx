@@ -5,10 +5,10 @@ const Contents = ({ posts }) => {
     <div>
       <div className='contents'>
         {posts.map((post) => (
-          <div className='content'>
+          <div className='content' key={post.id}>
             <h2>{post.title}</h2>
             {post.photos.map((photo) => (
-              <img src={`http://localhost:5000/api/v1/files/${photo.photo}`} className='contents-image' alt='contents' />
+              <img src={`http://localhost:5000/api/v1/files/${photo.photo}`} className='contents-image' alt='contents' key={photo.id} />
             ))}
           </div>
         ))}
