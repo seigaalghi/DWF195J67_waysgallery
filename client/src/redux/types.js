@@ -15,6 +15,8 @@ export const LOGOUT = 'LOGOUT';
 export const APPROVE_HIRE = 'APPROVE_HIRE';
 export const REJECT_HIRE = 'REJECT_HIRE';
 export const SEND_PROJECT = 'SEND_PROJECT';
+export const ADD_HIRING = 'ADD_HIRING';
+export const EDIT_PROFILE = 'EDIT_PROFILE';
 
 // =====================================================
 // ALERT TYPES

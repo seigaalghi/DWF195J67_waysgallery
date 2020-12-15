@@ -2,7 +2,7 @@ import React, { Fragment, useEffect } from 'react';
 import Navbar from '../navbar/Navbar';
 import { connect } from 'react-redux';
 import { loadProfileById } from '../../redux/action/profile';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Loading from '../Loading';
 
 const Profile = ({ loadProfileById, profile: { loading, profile }, auth }) => {
@@ -22,11 +22,15 @@ const Profile = ({ loadProfileById, profile: { loading, profile }, auth }) => {
       </div>
       <div className='action'>
         {parseInt(auth.user.id) === parseInt(id) ? (
-          <div className='btn bg-primary'>Edit Profile</div>
+          <Link to='/edit-profile' className='btn bg-primary'>
+            Edit Profile
+          </Link>
         ) : (
           <Fragment>
             <div className='btn bg-secondary'>Follow</div>
-            <div className='btn bg-primary'>Hire</div>
+            <Link to={`/hire/${profile.id}`} className='btn bg-primary'>
+              Hire
+            </Link>
           </Fragment>
         )}
       </div>

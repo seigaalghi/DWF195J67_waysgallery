@@ -1,5 +1,17 @@
 import axios from 'axios';
-import { AUTH_ERROR, LOAD_USER, LOGIN_SUCCESS, REGISTER_SUCCESS, LOGOUT, LOAD_USERS, APPROVE_HIRE, REJECT_HIRE, SEND_PROJECT } from '../types';
+import {
+  AUTH_ERROR,
+  LOAD_USER,
+  LOGIN_SUCCESS,
+  REGISTER_SUCCESS,
+  LOGOUT,
+  LOAD_USERS,
+  APPROVE_HIRE,
+  REJECT_HIRE,
+  SEND_PROJECT,
+  ADD_HIRING,
+  EDIT_PROFILE,
+} from '../types';
 import { setAlert } from './alert';
 import setAuth from '../utility/setAuthToken';
 
@@ -188,6 +200,67 @@ export const sendProject = (id, data) => async (dispatch) => {
     dispatch({
       type: SEND_PROJECT,
       payload: res.data.data.hire,
+    });
+    dispatch(setAlert(res.data.message, 'success'));
+  } catch (error) {
+    if (error.response) {
+      if (error.response.data.message) {
+        dispatch(setAlert(error.response.data.message, 'danger'));
+      }
+    }
+  }
+};
+
+// =========================================================================================
+// APPROVE HIRE
+// =========================================================================================
+
+export const addHiring = (id, data) => async (dispatch) => {
+  const body = JSON.stringify({ ...data, orderTo: id });
+
+  const config = {
+    headers: {
+      'Content-type': 'application/json',
+    },
+  };
+  try {
+    const res = await axios.post(`/api/v1/hire`, body, config);
+    dispatch({
+      type: ADD_HIRING,
+      payload: res.data.data.hire,
+    });
+    dispatch(setAlert(res.data.message, 'success'));
+  } catch (error) {
+    if (error.response) {
+      if (error.response.data.message) {
+        dispatch(setAlert(error.response.data.message, 'danger'));
+      }
+    }
+  }
+};
+
+// =====================================================================
+// EDIT PROFILE
+// =====================================================================
+
+export const editProfile = (data) => async (dispatch) => {
+  const { name, greeting, avatar, arts } = data;
+  const formData = new FormData();
+  formData.append('name', name);
+  formData.append('greeting', greeting);
+  formData.append('avatar', avatar);
+  formData.append('arts', arts);
+
+  const config = {
+    headers: {
+      'Content-type': 'multipart/form-data',
+    },
+  };
+  try {
+    const res = await axios.put(`/api/v1/user/profile`, formData, config);
+    dispatch({
+      type: EDIT_PROFILE,
+      payload: res.data.data.user,
     });
     dispatch(setAlert(res.data.message, 'success'));
   } catch (error) {

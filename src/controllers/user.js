@@ -1,4 +1,4 @@
-const { Post, Hire, User, Photo, Art } = require('../../models');
+const { Post, Hire, User, Photo, Art, Project, ProjectImage } = require('../../models');
 const Joi = require('joi');
 
 // =================================================================================
@@ -11,23 +11,6 @@ exports.putUser = async (req, res) => {
   const file = req.files;
   console.log(file);
   try {
-    const schema = Joi.object({
-      name: Joi.string(),
-      avatar: Joi.string(),
-      password: Joi.string(),
-      arts: Joi.array(),
-    });
-
-    const { error } = schema.validate({ ...body, avatar: file.avatar[0].filename, arts: file.arts }, { abortEarly: false });
-
-    if (error) {
-      return res.status(400).send({
-        status: 'failed',
-        message: error.details[0].message,
-        errors: error.details.map((detail) => detail.message),
-      });
-    }
-
     const old = await User.findOne({
       where: { id: user.id },
       attributes: {
@@ -83,10 +66,50 @@ exports.putUser = async (req, res) => {
           {
             model: Hire,
             as: 'offers',
+            include: [
+              {
+                model: Project,
+                as: 'project',
+                include: {
+                  model: ProjectImage,
+                  as: 'images',
+                },
+              },
+              {
+                model: User,
+                as: 'offeredTo',
+                attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
+              },
+              {
+                model: User,
+                as: 'orderedBy',
+                attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
+              },
+            ],
           },
           {
             model: Hire,
             as: 'orders',
+            include: [
+              {
+                model: Project,
+                as: 'project',
+                include: {
+                  model: ProjectImage,
+                  as: 'images',
+                },
+              },
+              {
+                model: User,
+                as: 'offeredTo',
+                attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
+              },
+              {
+                model: User,
+                as: 'orderedBy',
+                attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
+              },
+            ],
           },
           {
             model: Art,

@@ -4,11 +4,12 @@ import {
   LOGIN_SUCCESS,
   REGISTER_SUCCESS,
   LOGOUT,
-  LOAD_USERS,
   REGISTER_FAILED,
   APPROVE_HIRE,
   REJECT_HIRE,
   SEND_PROJECT,
+  ADD_HIRING,
+  EDIT_PROFILE,
 } from '../types';
 
 const initialState = {
@@ -77,6 +78,16 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         user: { ...state.user, orders: state.user.orders.map((order) => (order.id === payload.id ? payload : order)) },
+      };
+    case ADD_HIRING:
+      return {
+        ...state,
+        user: { ...state.user, offers: [...state.user.offers, payload] },
+      };
+    case EDIT_PROFILE:
+      return {
+        ...state,
+        user: payload,
       };
 
     default:

@@ -8,7 +8,7 @@ const { addProject } = require('../controllers/project');
 const { auth } = require('../middlewares/auth');
 const { fileDownload } = require('../middlewares/file');
 const { fileUpload } = require('../middlewares/upload');
-const { approveHire, rejectHire } = require('../controllers/hire');
+const { approveHire, rejectHire, createHire } = require('../controllers/hire');
 
 // ==================================================================
 // Auth
@@ -43,6 +43,7 @@ router.post('/project/:hireId', fileUpload('images', null), auth, addProject);
 
 router.put('/hire/:id', auth, approveHire);
 router.delete('/hire/:id', auth, rejectHire);
+router.post('/hire', auth, createHire);
 
 // ==================================================================
 // File

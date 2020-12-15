@@ -1,6 +1,6 @@
 import React, { useEffect, Fragment } from 'react';
 import { connect } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { loadPost } from '../../redux/action/post';
 import Loading from '../Loading';
 import Navbar from '../navbar/Navbar';
@@ -26,7 +26,9 @@ const Post = ({ post: { loading, post }, loadPost }) => {
         <div className='action'>
           <Fragment>
             <div className='btn bg-secondary'>Follow</div>
-            <div className='btn bg-primary'>Hire</div>
+            <Link to={`/hire/${post.user.id}`} className='btn bg-primary'>
+              Hire
+            </Link>
           </Fragment>
         </div>
         <div className='project'>

@@ -1,5 +1,6 @@
 import { LOAD_POSTS, LOAD_POST, ADD_POST } from '../types';
 import axios from 'axios';
+import { setAlert } from './alert';
 
 export const loadPost = (id) => async (dispatch) => {
   try {
@@ -48,6 +49,7 @@ export const addPost = (data) => async (dispatch) => {
       type: ADD_POST,
       payload: res.data.data.post,
     });
+    dispatch(setAlert(res.data.message, 'success'));
   } catch (error) {
     console.log(error);
   }

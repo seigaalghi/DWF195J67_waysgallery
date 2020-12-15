@@ -340,3 +340,25 @@ td {
 img {
   max-width: 300px;
 }
+
+.edit-profile {
+  width: 90%;
+  form {
+    display: flex;
+    flex-direction: column;
+    margin: 10px auto;
+    .input {
+      width: 50%;
+      height: 40px;
+      margin: 10px;
+    }
+    label {
+      margin: 10px;
+    }
+    input[type='submit'] {
+      width: 50%;
+      height: 40px;
+      margin: 10px;
+    }
+  }
+}
