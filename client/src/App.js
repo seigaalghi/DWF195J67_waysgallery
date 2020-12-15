@@ -8,6 +8,8 @@ import { loadUser } from './redux/action/auth';
 import setAuthToken from './redux/utility/setAuthToken';
 import Home from './components/home/Home';
 import PrivateRoute from './components/routing/PrivateRoute';
+import Profile from './components/profile/Profile';
+import Project from './components/Project/Project';
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -24,6 +26,8 @@ function App() {
           <Route path='/landing' exact component={Background} />
           <div className='App-container'>
             <PrivateRoute path='/' exact component={Home} />
+            <PrivateRoute path='/profile/:id' exact component={Profile} />
+            <PrivateRoute path='/order' exact component={Project} />
           </div>
         </Switch>
       </Router>

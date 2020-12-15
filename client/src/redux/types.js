@@ -27,3 +27,9 @@ export const SET_UPLOAD = 'SET_UPLOAD';
 
 export const LOAD_POST = 'LOAD_POST';
 export const LOAD_POSTS = 'LOAD_POSTS';
+
+// =====================================================
+// PROFILE TYPES
+// =====================================================
+
+export const LOAD_PROFILE = 'LOAD_PROFILE';

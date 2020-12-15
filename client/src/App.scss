@@ -213,14 +213,26 @@ body {
   left: 0px;
   right: 0px;
   height: 90px;
-  background-color: $primary;
+  background-color: $secondary;
   display: flex;
   align-items: center;
   justify-content: space-around;
+  .menu {
+    display: flex;
+    .avatar {
+      img {
+        border-radius: 50%;
+        width: 60px;
+        margin-left: 20px;
+      }
+    }
+  }
 }
 
 .App-container {
   margin-top: 100px;
+  width: 80%;
+  margin: 100px auto;
 }
 
 .home-container {
@@ -230,6 +242,44 @@ body {
         max-width: 300px;
         margin: 10px;
       }
+    }
+  }
+}
+
+.profile-container {
+  display: grid;
+  grid-template-areas:
+    'greeting art art'
+    'action art art'
+    'project project project';
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 3fr;
+  .greeting {
+    grid-area: greeting;
+    .avatar {
+      border-radius: 50%;
+      width: 150px;
+    }
+  }
+  .art {
+    grid-area: art;
+    align-self: center;
+    justify-self: end;
+    padding-right: 20%;
+  }
+  .action {
+    grid-area: action;
+    display: flex;
+    .btn {
+      padding: 10px;
+      width: 120px;
+    }
+  }
+  .project {
+    grid-area: project;
+    img {
+      max-width: 300px;
+      margin: 10px;
     }
   }
 }

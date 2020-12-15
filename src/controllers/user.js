@@ -166,3 +166,63 @@ exports.getUsers = async (req, res) => {
     });
   }
 };
+
+// =================================================================================
+// GET USER BY ID
+// =================================================================================
+
+exports.loadUserById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await User.findOne({
+      where: { id },
+      attributes: {
+        exclude: ['createdAt', 'updatedAt', 'password'],
+      },
+      include: [
+        {
+          model: Post,
+          as: 'posts',
+          include: {
+            model: Photo,
+            as: 'photos',
+          },
+        },
+        {
+          model: Hire,
+          as: 'hires',
+        },
+        {
+          model: Hire,
+          as: 'offers',
+        },
+        {
+          model: Art,
+          as: 'arts',
+        },
+      ],
+    });
+
+    if (!user) {
+      res.status(400).json({
+        status: 'failed',
+        message: `No user found with ID of ${id}`,
+      });
+    }
+    res.status(200).json({
+      status: 'success',
+      message: 'User loaded successfully',
+      data: {
+        profile: user,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      status: 'error',
+      error: {
+        message: 'Internal Server Error',
+      },
+    });
+  }
+};

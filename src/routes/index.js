@@ -3,7 +3,7 @@ const router = express.Router();
 
 const { register, login, loadUser } = require('../controllers/auth');
 const { getPosts, getPost, addPost } = require('../controllers/posts');
-const { putUser, getUsers } = require('../controllers/user');
+const { putUser, getUsers, loadUserById } = require('../controllers/user');
 const { auth } = require('../middlewares/auth');
 const { fileDownload } = require('../middlewares/file');
 const { fileUpload } = require('../middlewares/upload');
@@ -27,6 +27,7 @@ router.post('/post/', fileUpload('photos', null), auth, addPost);
 // ==================================================================
 router.put('/user/profile/', fileUpload('avatar', 'arts'), auth, putUser);
 router.get('/users/', getUsers);
+router.get('/user/:id', loadUserById);
 
 // ==================================================================
 // File
