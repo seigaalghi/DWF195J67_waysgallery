@@ -6,6 +6,8 @@ import Background from './components/landing/Background';
 import store from './redux/store';
 import { loadUser } from './redux/action/auth';
 import setAuthToken from './redux/utility/setAuthToken';
+import Home from './components/home/Home';
+import PrivateRoute from './components/routing/PrivateRoute';
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -19,7 +21,10 @@ function App() {
     <Provider store={store}>
       <Router>
         <Switch>
-          <Route component={Background} />
+          <Route path='/landing' exact component={Background} />
+          <div className='App-container'>
+            <PrivateRoute path='/' exact component={Home} />
+          </div>
         </Switch>
       </Router>
     </Provider>

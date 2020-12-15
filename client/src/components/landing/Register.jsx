@@ -1,15 +1,17 @@
 import React from 'react';
 import { Formik, Form } from 'formik';
 import FormController from '../form/FormController';
+import { userRegister } from '../../redux/action/auth';
+import { connect } from 'react-redux';
 
-const Login = ({ close, login }) => {
+const Login = ({ close, login, userRegister }) => {
   const initialValues = {
     name: '',
     email: '',
     password: '',
   };
   const onSubmit = (values) => {
-    console.log(values);
+    userRegister(values);
   };
   return (
     <div className='landing-modal-container' onClick={close}>
@@ -34,4 +36,4 @@ const Login = ({ close, login }) => {
   );
 };
 
-export default Login;
+export default connect(null, { userRegister })(Login);

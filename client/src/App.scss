@@ -11,6 +11,11 @@ $warning: #f1c40f;
   padding: 0px;
 }
 
+a {
+  text-decoration: none;
+  color: black;
+}
+
 body {
   font-family: 'Open Sans', sans-serif;
   font-size: 20px;
@@ -199,5 +204,32 @@ body {
     align-items: center;
     justify-content: center;
     margin: 10px auto;
+  }
+}
+
+.navbar-container {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  height: 90px;
+  background-color: $primary;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.App-container {
+  margin-top: 100px;
+}
+
+.home-container {
+  .contents {
+    .content {
+      img {
+        max-width: 300px;
+        margin: 10px;
+      }
+    }
   }
 }

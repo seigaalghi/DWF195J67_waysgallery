@@ -1,11 +1,13 @@
-import e from 'cors';
 import React, { useState } from 'react';
 import logo from '../../images/Group3.svg';
 import Login from './Login';
 import Register from './Register';
+import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-const Background = () => {
+const Background = ({ auth }) => {
   const [modal, setModal] = useState('');
+
   const closeModal = (e) => {
     if (e.target === e.currentTarget) setModal('');
   };
@@ -15,6 +17,10 @@ const Background = () => {
   const setRegister = () => {
     setModal('REGISTER');
   };
+
+  if (auth.isAuthenticated) {
+    return <Redirect to='/' />;
+  }
 
   return (
     <div className='landing-container'>
@@ -44,4 +50,8 @@ const Background = () => {
   );
 };
 
-export default Background;
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps, {})(Background);

@@ -1,4 +1,4 @@
-const { Post, Hire, User, Photo } = require('../../models');
+const { Post, Hire, User, Photo, Art } = require('../../models');
 const Joi = require('joi');
 
 // =================================================================================
@@ -9,14 +9,16 @@ exports.putUser = async (req, res) => {
   const body = req.body;
   const user = req.user;
   const file = req.files;
+  console.log(file);
   try {
     const schema = Joi.object({
       name: Joi.string(),
       avatar: Joi.string(),
       password: Joi.string(),
+      arts: Joi.array(),
     });
 
-    const { error } = schema.validate({ ...body, avatar: file[0].filename }, { abortEarly: false });
+    const { error } = schema.validate({ ...body, avatar: file.avatar[0].filename, arts: file.arts }, { abortEarly: false });
 
     if (error) {
       return res.status(400).send({
@@ -36,7 +38,7 @@ exports.putUser = async (req, res) => {
     const update = await User.update(
       {
         ...body,
-        avatar: file[0].filename ? file[0].filename : old.avatar,
+        avatar: file.avatar[0].filename ? file.avatar[0].filename : old.avatar,
       },
       {
         where: {
@@ -51,38 +53,58 @@ exports.putUser = async (req, res) => {
         message: 'Failed to edit user profile',
       });
     }
+    console.log('1');
 
-    const response = await User.findOne({
-      where: { id: user.id },
-      attributes: {
-        exclude: ['createdAt', 'updatedAt', 'password'],
-      },
-      include: [
-        {
-          model: Post,
-          as: 'posts',
-          include: {
-            model: Photo,
-            as: 'photos',
+    const art = async () => {
+      return Promise.all(
+        file.arts.map(async (image) => {
+          await Art.create({
+            userId: user.id,
+            art: image.filename,
+          });
+        })
+      );
+    };
+
+    console.log('art');
+
+    art().then(async () => {
+      const response = await User.findOne({
+        where: { id: user.id },
+        attributes: {
+          exclude: ['createdAt', 'updatedAt', 'password'],
+        },
+        include: [
+          {
+            model: Post,
+            as: 'posts',
+            include: {
+              model: Photo,
+              as: 'photos',
+            },
           },
-        },
-        {
-          model: Hire,
-          as: 'hires',
-        },
-        {
-          model: Hire,
-          as: 'offers',
-        },
-      ],
-    });
+          {
+            model: Hire,
+            as: 'hires',
+          },
+          {
+            model: Hire,
+            as: 'offers',
+          },
+          {
+            model: Art,
+            as: 'arts',
+          },
+        ],
+      });
 
-    res.status(400).json({
-      status: 'success',
-      message: 'Profile edited successfuly',
-      data: {
-        user: response,
-      },
+      res.status(400).json({
+        status: 'success',
+        message: 'Profile edited successfuly',
+        data: {
+          user: response,
+        },
+      });
     });
   } catch (error) {}
 };
@@ -113,6 +135,10 @@ exports.getUsers = async (req, res) => {
         {
           model: Hire,
           as: 'offers',
+        },
+        {
+          model: Art,
+          as: 'arts',
         },
       ],
     });

@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       User.hasMany(models.Post, { as: 'posts', foreignKey: 'userId' });
+      User.hasMany(models.Art, { as: 'arts', foreignKey: 'userId' });
       User.hasMany(models.Hire, { as: 'hires', foreignKey: 'orderBy' });
       User.hasMany(models.Hire, { as: 'offers', foreignKey: 'orderTo' });
     }
@@ -19,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       name: DataTypes.STRING,
       email: DataTypes.STRING,
       password: DataTypes.STRING,
+      greeting: DataTypes.STRING,
       avatar: DataTypes.STRING,
     },
     {

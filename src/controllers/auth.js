@@ -1,4 +1,4 @@
-const { User, Post, Hire, Photo } = require('../../models');
+const { User, Post, Hire, Photo, Art } = require('../../models');
 const Joi = require('joi');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -172,6 +172,10 @@ exports.loadUser = async (req, res) => {
         {
           model: Hire,
           as: 'offers',
+        },
+        {
+          model: Art,
+          as: 'arts',
         },
       ],
     });

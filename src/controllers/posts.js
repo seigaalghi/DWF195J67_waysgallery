@@ -85,6 +85,7 @@ exports.getPost = async (req, res) => {
 exports.addPost = async (req, res) => {
   const body = req.body;
   const file = req.files;
+  console.log('INI FILE', file);
   try {
     const schema = Joi.object({
       title: Joi.string().required(),
@@ -92,7 +93,7 @@ exports.addPost = async (req, res) => {
       photos: Joi.array().required(),
     });
 
-    const { error } = schema.validate({ ...req.body, photos: req.files }, { abortEarly: false });
+    const { error } = schema.validate({ ...req.body, photos: req.files.photos }, { abortEarly: false });
 
     if (error) {
       return res.status(400).send({
@@ -117,7 +118,7 @@ exports.addPost = async (req, res) => {
 
     const photo = async () => {
       return Promise.all(
-        file.map(async (image) => {
+        file.photos.map(async (image) => {
           await Photo.create({
             postId: post.id,
             photo: image.filename,

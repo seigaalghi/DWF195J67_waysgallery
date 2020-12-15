@@ -1,7 +1,7 @@
 const multer = require('multer');
 const path = require('path');
 
-exports.fileUpload = (field) => {
+exports.fileUpload = (field1, field2) => {
   const storage = multer.diskStorage({
     destination: function (req, file, cb) {
       cb(null, 'uploads');
@@ -48,7 +48,14 @@ exports.fileUpload = (field) => {
     limits: {
       fileSize,
     },
-  }).array(field);
+  }).fields([
+    {
+      name: field1,
+    },
+    {
+      name: field2,
+    },
+  ]);
 
   return (req, res, next) => {
     upload(req, res, (err) => {
