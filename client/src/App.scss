@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
 
-$primary: #2c3e50;
-$secondary: #ecf0f1;
+$primary: #2fc4b2;
+$secondary: #e7e7e7;
 $success: #2ecc71;
 $danger: #e74c3c;
 $warning: #f1c40f;
@@ -82,10 +82,12 @@ body {
 
 .btn {
   border-radius: 5px;
-  width: 150px;
+  width: 100px;
   height: 30px;
   margin: 5px;
   cursor: pointer;
+  padding: 10px;
+  text-align: center;
 }
 
 .btn:active {
@@ -102,10 +104,10 @@ body {
   background-color: $warning;
 }
 .bg-primary {
-  background-color: $warning;
+  background-color: $primary;
 }
 .bg-secondary {
-  background-color: $warning;
+  background-color: $secondary;
 }
 
 .color-success {
@@ -122,4 +124,80 @@ body {
 }
 .color-secondary {
   color: $warning;
+}
+
+.landing-container {
+  background-image: url(./images/Assets.svg), url(./images/Vector1.svg), url(./images/Vector2.svg), url(./images/Vector3.svg);
+  height: 100vh;
+  background-repeat: no-repeat;
+  background-position: 80%, top left, bottom left, bottom right;
+  .text {
+    position: absolute;
+    top: 20%;
+    left: 15%;
+    h1 {
+      font-size: 85px;
+      margin-bottom: 10px;
+      margin-top: -70px;
+      color: $primary;
+    }
+    .heading {
+      display: flex;
+      align-items: center;
+      h1 {
+        margin-top: -25px;
+        color: black;
+      }
+    }
+    .text-content {
+      width: 700px;
+    }
+    .btn {
+      display: inline-block;
+      font-weight: bold;
+    }
+    .bg-primary {
+      color: $secondary;
+    }
+  }
+}
+
+.landing-modal-container {
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  left: 0px;
+  bottom: 0px;
+  background-color: rgba(0, 0, 0, 0.664);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+
+  .landing-modal {
+    background-color: $secondary;
+    padding: 50px;
+    border-radius: 20px;
+    align-items: left;
+
+    div.link-to {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 10px auto;
+      cursor: pointer;
+    }
+    div.link-to:hover {
+      text-decoration: underline;
+    }
+  }
+  .btn {
+    padding: 5;
+    width: 250px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px auto;
+  }
 }

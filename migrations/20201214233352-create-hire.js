@@ -23,7 +23,7 @@ module.exports = {
       price: {
         type: Sequelize.INTEGER,
       },
-      oderBy: {
+      orderBy: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {

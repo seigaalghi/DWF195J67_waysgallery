@@ -26,7 +26,129 @@ exports.getPosts = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.satus(500).json({
+    res.status(500).json({
+      status: 'error',
+      error: {
+        message: 'Internal Server Error',
+      },
+    });
+  }
+};
+
+// =================================================================================
+// GET POST
+// =================================================================================
+
+exports.getPost = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const post = await Post.findOne({
+      where: { id },
+      attributes: { exclude: ['createdAt', 'updatedAt'] },
+      include: [
+        {
+          model: Photo,
+          as: 'photos',
+        },
+      ],
+    });
+
+    if (!post) {
+      res.status(400).json({
+        status: 'failed',
+        message: `No Post Found with ID of ${id}`,
+      });
+    }
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Post loaded successfully',
+      data: {
+        post,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      status: 'error',
+      error: {
+        message: 'Internal Server Error',
+      },
+    });
+  }
+};
+
+// =================================================================================
+// ADD POST
+// =================================================================================
+
+exports.addPost = async (req, res) => {
+  const body = req.body;
+  const file = req.files;
+  try {
+    const schema = Joi.object({
+      title: Joi.string().required(),
+      description: Joi.string().required(),
+      photos: Joi.array().required(),
+    });
+
+    const { error } = schema.validate({ ...req.body, photos: req.files }, { abortEarly: false });
+
+    if (error) {
+      return res.status(400).send({
+        status: 'failed',
+        message: error.details[0].message,
+        errors: error.details.map((detail) => detail.message),
+      });
+    }
+
+    const post = await Post.create({
+      title: body.title,
+      description: body.description,
+      userId: req.user.id,
+    });
+
+    if (!post) {
+      return res.status(400).json({
+        status: 'failed',
+        message: 'Failed to add post please try again',
+      });
+    }
+
+    const photo = async () => {
+      return Promise.all(
+        file.map(async (image) => {
+          await Photo.create({
+            postId: post.id,
+            photo: image.filename,
+          });
+        })
+      );
+    };
+
+    photo().then(async () => {
+      const response = await Post.findOne({
+        where: { id: post.id },
+        attributes: { exclude: ['createdAt', 'updatedAt'] },
+        include: [
+          {
+            model: Photo,
+            as: 'photos',
+          },
+        ],
+      });
+
+      res.status(200).json({
+        status: 'success',
+        message: 'Post added successfully',
+        data: {
+          post: response,
+        },
+      });
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
       status: 'error',
       error: {
         message: 'Internal Server Error',

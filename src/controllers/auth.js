@@ -1,4 +1,4 @@
-const { User } = require('../../models');
+const { User, Post, Hire, Photo } = require('../../models');
 const Joi = require('joi');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -156,6 +156,24 @@ exports.loadUser = async (req, res) => {
       attributes: {
         exclude: ['createdAt', 'updatedAt', 'password'],
       },
+      include: [
+        {
+          model: Post,
+          as: 'posts',
+          include: {
+            model: Photo,
+            as: 'photos',
+          },
+        },
+        {
+          model: Hire,
+          as: 'hires',
+        },
+        {
+          model: Hire,
+          as: 'offers',
+        },
+      ],
     });
 
     if (!user) {
