@@ -1,0 +1,125 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+
+$primary: #2c3e50;
+$secondary: #ecf0f1;
+$success: #2ecc71;
+$danger: #e74c3c;
+$warning: #f1c40f;
+
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 20px;
+}
+
+.form-control {
+  margin: 15px;
+  .input {
+    width: 400px;
+    height: 40px;
+    padding: 8px;
+    box-sizing: border-box;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    cursor: pointer;
+  }
+
+  label {
+    display: block;
+  }
+
+  .checkbox-group {
+    label {
+      display: inline;
+      margin-left: 5px;
+    }
+  }
+
+  .radio-group {
+    label {
+      display: inline;
+      margin-left: 5px;
+    }
+  }
+
+  input[type='radio'],
+  input[type='checkbox'] {
+    cursor: pointer;
+  }
+
+  .input-file {
+    display: none;
+  }
+
+  .file-label {
+    width: 400px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+  }
+
+  .input::placeholder,
+  .file-label,
+  input[type='date'],
+  select {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 15px;
+    color: rgb(80, 80, 80);
+  }
+}
+
+.btn {
+  border-radius: 5px;
+  width: 150px;
+  height: 30px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+.btn:active {
+  border: none;
+}
+
+.bg-success {
+  background-color: $success;
+}
+.bg-danger {
+  background-color: $danger;
+}
+.bg-warning {
+  background-color: $warning;
+}
+.bg-primary {
+  background-color: $warning;
+}
+.bg-secondary {
+  background-color: $warning;
+}
+
+.color-success {
+  color: $success;
+}
+.color-danger {
+  color: $danger;
+}
+.color-warning {
+  color: $warning;
+}
+.color-primary {
+  color: $warning;
+}
+.color-secondary {
+  color: $warning;
+}
