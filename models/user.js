@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.Art, { as: 'arts', foreignKey: 'userId' });
       User.hasMany(models.Hire, { as: 'offers', foreignKey: 'orderBy' });
       User.hasMany(models.Hire, { as: 'orders', foreignKey: 'orderTo' });
+      User.hasMany(models.Project, { as: 'projects', foreignKey: 'userId' });
     }
   }
   User.init(

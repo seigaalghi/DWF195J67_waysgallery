@@ -2,13 +2,17 @@ import React from 'react';
 import { Field, ErrorMessage } from 'formik';
 import ErrorText from './ErrorText';
 
-const Input = ({ label, name, accept, placeholder, ...rest }) => {
+const Input = ({ label, name, accept, placeholder, currentvalue, ...rest }) => {
   return (
     <div className='form-control'>
       <label htmlFor={name}>{label}</label>
-      <label htmlFor={name} className='file-label'>
-        {placeholder}
-      </label>
+      {currentvalue ? (
+        <img src={URL.createObjectURL(currentvalue)} alt='image' style={{ maxWidth: '100px' }} />
+      ) : (
+        <label htmlFor={name} className='file-label'>
+          {placeholder}
+        </label>
+      )}
       <Field>
         {(field) => {
           const { form } = field;

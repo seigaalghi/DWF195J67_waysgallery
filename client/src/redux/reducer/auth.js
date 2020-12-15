@@ -1,4 +1,15 @@
-import { AUTH_ERROR, LOAD_USER, LOGIN_SUCCESS, REGISTER_SUCCESS, LOGOUT, LOAD_USERS, REGISTER_FAILED } from '../types';
+import {
+  AUTH_ERROR,
+  LOAD_USER,
+  LOGIN_SUCCESS,
+  REGISTER_SUCCESS,
+  LOGOUT,
+  LOAD_USERS,
+  REGISTER_FAILED,
+  APPROVE_HIRE,
+  REJECT_HIRE,
+  SEND_PROJECT,
+} from '../types';
 
 const initialState = {
   token: localStorage.getItem('token'),
@@ -51,6 +62,21 @@ const authReducer = (state = initialState, action) => {
       localStorage.setItem('token', payload.token);
       return {
         ...state,
+      };
+    case APPROVE_HIRE:
+      return {
+        ...state,
+        user: { ...state.user, orders: state.user.orders.map((order) => (order.id === payload.id ? payload : order)) },
+      };
+    case REJECT_HIRE:
+      return {
+        ...state,
+        user: { ...state.user, orders: state.user.orders.map((order) => (order.id === payload.id ? payload : order)) },
+      };
+    case SEND_PROJECT:
+      return {
+        ...state,
+        user: { ...state.user, orders: state.user.orders.map((order) => (order.id === payload.id ? payload : order)) },
       };
 
     default:

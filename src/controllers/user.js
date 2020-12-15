@@ -53,7 +53,6 @@ exports.putUser = async (req, res) => {
         message: 'Failed to edit user profile',
       });
     }
-    console.log('1');
 
     const art = async () => {
       return Promise.all(
@@ -65,8 +64,6 @@ exports.putUser = async (req, res) => {
         })
       );
     };
-
-    console.log('art');
 
     art().then(async () => {
       const response = await User.findOne({

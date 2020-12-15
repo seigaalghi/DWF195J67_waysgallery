@@ -1,4 +1,4 @@
-const { Post, Photo } = require('../../models');
+const { Post, Photo, User } = require('../../models');
 const Joi = require('joi');
 
 // =================================================================================
@@ -14,6 +14,11 @@ exports.getPosts = async (req, res) => {
           model: Photo,
           as: 'photos',
           attributes: ['id', 'photo'],
+        },
+        {
+          model: User,
+          as: 'user',
+          attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
         },
       ],
     });
@@ -49,6 +54,11 @@ exports.getPost = async (req, res) => {
         {
           model: Photo,
           as: 'photos',
+        },
+        {
+          model: User,
+          as: 'user',
+          attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
         },
       ],
     });

@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import Loading from '../Loading';
 
 const Offer = ({ auth: { loading, user } }) => {
@@ -28,17 +29,28 @@ const Offer = ({ auth: { loading, user } }) => {
               <td>{new Date(offer.start).toLocaleDateString()}</td>
               <td>{new Date(offer.end).toLocaleDateString()}</td>
               <td>
-                {offer.hiredStatus === null ? (
+                {offer.status === 'PENDING' ? (
                   <span className='color-warning'>Pending</span>
-                ) : offer.hiredStatus === <span>APPROVED</span> ? (
+                ) : offer.status === 'APPROVED' ? (
                   <span className='color-success'>Approved</span>
+                ) : offer.status === 'COMPLETED' ? (
+                  <span className='color-primary'>Completed</span>
                 ) : (
                   <span className='color-danger'>Canceled</span>
                 )}
               </td>
               <td>
-                <button className='btn bg-primary'>Approve</button>
-                <button className='btn bg-danger'>Cancel</button>
+                {offer.status === 'PENDING' ? (
+                  <span className='color-warning'>Pending</span>
+                ) : offer.status === 'APPROVED' ? (
+                  <span className='color-success'>Approved</span>
+                ) : offer.status === 'COMPLETED' ? (
+                  <Link to={`/view-project/${offer.id}`} className='btn bg-primary'>
+                    View Project
+                  </Link>
+                ) : (
+                  <span className='color-danger'>Canceled</span>
+                )}
               </td>
             </tr>
           ))}

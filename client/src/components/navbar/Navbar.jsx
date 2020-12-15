@@ -14,6 +14,9 @@ const Navbar = ({ userLogout, auth: { loading, user } }) => {
         <img src={logo} alt='logo' />
       </Link>
       <div className='menu'>
+        <Link className='btn bg-primary' to='/upload'>
+          Upload
+        </Link>
         <Link className='btn bg-primary' to='/order'>
           Order
         </Link>

@@ -43,11 +43,9 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
-      hiredStatus: {
+      status: {
         type: Sequelize.STRING,
-      },
-      offeredStatus: {
-        type: Sequelize.STRING,
+        defaultValue: 'PENDING',
       },
       createdAt: {
         allowNull: false,

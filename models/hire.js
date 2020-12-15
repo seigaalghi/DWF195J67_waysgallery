@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Hire.belongsTo(models.User, { as: 'orderedBy', foreignKey: 'orderBy' });
       Hire.belongsTo(models.User, { as: 'offeredTo', foreignKey: 'orderTo' });
+      Hire.hasOne(models.Project, { as: 'project', foreignKey: 'hireId' });
     }
   }
   Hire.init(
@@ -22,8 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       price: DataTypes.INTEGER,
       orderBy: DataTypes.INTEGER,
       orderTo: DataTypes.INTEGER,
-      hiredStatus: DataTypes.STRING,
-      offeredStatus: DataTypes.STRING,
+      status: DataTypes.STRING,
     },
     {
       sequelize,

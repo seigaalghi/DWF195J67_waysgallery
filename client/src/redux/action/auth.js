@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { AUTH_ERROR, LOAD_USER, LOGIN_SUCCESS, REGISTER_SUCCESS, LOGOUT, LOAD_USERS } from '../types';
+import { AUTH_ERROR, LOAD_USER, LOGIN_SUCCESS, REGISTER_SUCCESS, LOGOUT, LOAD_USERS, APPROVE_HIRE, REJECT_HIRE, SEND_PROJECT } from '../types';
 import { setAlert } from './alert';
 import setAuth from '../utility/setAuthToken';
 
@@ -113,6 +113,83 @@ export const loadUsers = () => async (dispatch) => {
       type: LOAD_USERS,
       payload: res.data.data,
     });
+  } catch (error) {
+    if (error.response) {
+      if (error.response.data.message) {
+        dispatch(setAlert(error.response.data.message, 'danger'));
+      }
+    }
+  }
+};
+
+// =========================================================================================
+// APPROVE HIRE
+// =========================================================================================
+
+export const approveHire = (id) => async (dispatch) => {
+  try {
+    const res = await axios.put(`/api/v1/hire/${id}`);
+    dispatch({
+      type: APPROVE_HIRE,
+      payload: res.data.data.hire,
+    });
+    dispatch(setAlert(res.data.message, 'success'));
+  } catch (error) {
+    if (error.response) {
+      if (error.response.data.message) {
+        dispatch(setAlert(error.response.data.message, 'danger'));
+      }
+    }
+  }
+};
+
+// =========================================================================================
+// APPROVE HIRE
+// =========================================================================================
+
+export const rejectHire = (id) => async (dispatch) => {
+  try {
+    const res = await axios.delete(`/api/v1/hire/${id}`);
+    dispatch({
+      type: REJECT_HIRE,
+      payload: res.data.data.hire,
+    });
+    dispatch(setAlert(res.data.message, 'success'));
+  } catch (error) {
+    if (error.response) {
+      if (error.response.data.message) {
+        dispatch(setAlert(error.response.data.message, 'danger'));
+      }
+    }
+  }
+};
+
+// =========================================================================================
+// APPROVE HIRE
+// =========================================================================================
+
+export const sendProject = (id, data) => async (dispatch) => {
+  const { images, description } = data;
+  const formData = new FormData();
+  formData.append('images', images[0]);
+  formData.append('images', images[1]);
+  formData.append('images', images[2]);
+  formData.append('images', images[4]);
+  formData.append('images', images[5]);
+  formData.append('description', description);
+
+  const config = {
+    headers: {
+      'Content-type': 'multipart/form-data',
+    },
+  };
+  try {
+    const res = await axios.post(`/api/v1/project/${id}`, formData, config);
+    dispatch({
+      type: SEND_PROJECT,
+      payload: res.data.data.hire,
+    });
+    dispatch(setAlert(res.data.message, 'success'));
   } catch (error) {
     if (error.response) {
       if (error.response.data.message) {

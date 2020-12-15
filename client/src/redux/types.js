@@ -12,6 +12,9 @@ export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 export const REGISTER_FAILED = 'REGISTER_FAILED';
 export const AUTH_CLEAN = 'AUTH_CLEAN';
 export const LOGOUT = 'LOGOUT';
+export const APPROVE_HIRE = 'APPROVE_HIRE';
+export const REJECT_HIRE = 'REJECT_HIRE';
+export const SEND_PROJECT = 'SEND_PROJECT';
 
 // =====================================================
 // ALERT TYPES
@@ -27,6 +30,7 @@ export const SET_UPLOAD = 'SET_UPLOAD';
 
 export const LOAD_POST = 'LOAD_POST';
 export const LOAD_POSTS = 'LOAD_POSTS';
+export const ADD_POST = 'ADD_POST';
 
 // =====================================================
 // PROFILE TYPES

@@ -4,13 +4,13 @@ import { loadPosts } from '../../redux/action/post';
 import { connect } from 'react-redux';
 import Contents from './Contents';
 
-const Home = ({ post: { posts, post, loading }, loadPosts }) => {
+const Home = ({ post: { posts, loading }, loadPosts }) => {
   const [time, setTime] = useState('today');
   useEffect(() => {
     loadPosts();
   }, [loadPosts]);
 
-  return loading ? (
+  return loading || !posts ? (
     <h1>Loading</h1>
   ) : (
     <div className='home-container'>
