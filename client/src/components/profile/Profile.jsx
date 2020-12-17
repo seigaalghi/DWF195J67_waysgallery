@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { loadProfileById } from '../../redux/action/profile';
 import { Link, useParams } from 'react-router-dom';
 import Loading from '../Loading';
+import Contents from '../home/Contents';
 
 const Profile = ({ loadProfileById, profile: { loading, profile }, auth }) => {
   const { id } = useParams();
@@ -16,30 +17,32 @@ const Profile = ({ loadProfileById, profile: { loading, profile }, auth }) => {
     <div className='profile-container'>
       <Navbar />
       <div className='greeting'>
-        <img src={`/api/v1/files/${profile.avatar}`} alt='avatar' className='avatar' />
-        <h3>{profile.name}</h3>
+        <img src={profile.avatar} alt='avatar' className='avatar' />
+        <h2>{profile.name}</h2>
         <h1>{profile.greeting}</h1>
       </div>
       <div className='action'>
         {parseInt(auth.user.id) === parseInt(id) ? (
-          <Link to='/edit-profile' className='btn bg-primary'>
-            Edit Profile
+          <Link to='/edit-profile'>
+            <div className='btn btn-primary'>Edit Profile</div>
           </Link>
         ) : (
           <Fragment>
-            <div className='btn bg-secondary'>Follow</div>
-            <Link to={`/hire/${profile.id}`} className='btn bg-primary'>
-              Hire
+            <div className='btn btn-secondary'>Follow</div>
+            <Link to={`/hire/${profile.id}`}>
+              <div className='btn btn-primary'>Hire</div>
             </Link>
           </Fragment>
         )}
       </div>
-      <div className='art'>{profile.arts.length > 0 ? <img src={`/api/v1/files/${profile.arts[0].art}`} alt='art' /> : null}</div>
+      {profile.arts.length > 0 ? (
+        <div className='art'>
+          <img src={profile.arts[profile.arts.length - 1].art} alt='art' />{' '}
+        </div>
+      ) : null}
       <div className='project'>
         <h2>{auth.user.id === id ? 'My Works' : `${profile.name}'s Works`}</h2>
-        {profile.posts.length > 0
-          ? profile.posts.map((post) => post.photos.map((photo) => <img src={`/api/v1/files/${photo.photo}`} alt='photo' key={photo.id} />))
-          : null}
+        <Contents contents={profile.posts} />
       </div>
     </div>
   );

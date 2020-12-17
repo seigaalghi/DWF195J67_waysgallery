@@ -3,6 +3,7 @@ import Navbar from '../navbar/Navbar';
 import { loadPosts } from '../../redux/action/post';
 import { connect } from 'react-redux';
 import Contents from './Contents';
+import { Link } from 'react-router-dom';
 
 const Home = ({ post: { posts, loading }, loadPosts }) => {
   const [time, setTime] = useState('today');
@@ -21,7 +22,7 @@ const Home = ({ post: { posts, loading }, loadPosts }) => {
           <option value='all'>All Time</option>
         </select>
       </div>
-      <Contents posts={posts} />
+      <Contents contents={posts} />
     </div>
   );
 };

@@ -21,7 +21,7 @@ exports.putUser = async (req, res) => {
     const update = await User.update(
       {
         ...body,
-        avatar: file.avatar[0].filename ? file.avatar[0].filename : old.avatar,
+        avatar: file.avatar[0] ? file.avatar[0].path : old.avatar,
       },
       {
         where: {
@@ -42,7 +42,7 @@ exports.putUser = async (req, res) => {
         file.arts.map(async (image) => {
           await Art.create({
             userId: user.id,
-            art: image.filename,
+            art: image.path,
           });
         })
       );
@@ -118,7 +118,7 @@ exports.putUser = async (req, res) => {
         ],
       });
 
-      res.status(400).json({
+      res.status(200).json({
         status: 'success',
         message: 'Profile edited successfuly',
         data: {
@@ -203,10 +203,16 @@ exports.loadUserById = async (req, res) => {
         {
           model: Post,
           as: 'posts',
-          include: {
-            model: Photo,
-            as: 'photos',
-          },
+          include: [
+            {
+              model: Photo,
+              as: 'photos',
+            },
+            {
+              model: User,
+              as: 'user',
+            },
+          ],
         },
         {
           model: Hire,

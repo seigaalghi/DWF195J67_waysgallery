@@ -1,33 +1,45 @@
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import logo from '../../images/logo.svg';
 import { userLogout } from '../../redux/action/auth';
 import Loading from '../Loading';
+import Dropdown from './Dropdown';
 
 const Navbar = ({ userLogout, auth: { loading, user } }) => {
+  const [open, setOpen] = useState(false);
+  const wrapperRef = useRef(null);
+  useEffect(() => {
+    const closeHandler = (e) => {
+      if (wrapperRef.current) {
+        if (!wrapperRef.current.contains(e.target)) {
+          console.log(wrapperRef.current);
+          setOpen(false);
+        }
+      }
+    };
+    document.addEventListener('mousedown', closeHandler);
+  }, [wrapperRef]);
+
+  const dropHandler = (e) => {
+    setOpen(!open);
+  };
   return loading ? (
     <Loading />
   ) : (
     <div className='navbar-container'>
-      <Link to='/'>
-        <img src={logo} alt='logo' />
-      </Link>
+      <div className='logo'>
+        <Link to='/'>
+          <img src={logo} alt='logo' />
+        </Link>
+      </div>
       <div className='menu'>
-        <Link className='btn bg-primary' to='/upload'>
-          Upload
+        <Link to='/upload'>
+          <div className='btn btn-primary'>Upload</div>
         </Link>
-        <Link className='btn bg-primary' to='/order'>
-          Order
-        </Link>
-        <Link className='btn bg-primary' to={`/profile/${user.id}`}>
-          Profile
-        </Link>
-        <span className='btn bg-primary' onClick={() => userLogout()}>
-          Logout
-        </span>
-        <div className='avatar'>
-          <img src={`/api/v1/files/${user.avatar}`} alt='avatar' />
+        <div className='avatar' onClick={dropHandler} ref={wrapperRef}>
+          <img src={user.avatar} alt='avatar' className='avatar' />
+          {open ? <Dropdown user={user} logout={userLogout} /> : null}
         </div>
       </div>
     </div>

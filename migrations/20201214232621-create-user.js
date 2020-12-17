@@ -19,9 +19,11 @@ module.exports = {
       },
       avatar: {
         type: Sequelize.STRING,
+        defaultValue: 'https://lippianfamilydentistry.net/wp-content/uploads/2015/11/user-default-300x300.png',
       },
       greeting: {
         type: Sequelize.STRING,
+        defaultValue: 'Hello there...',
       },
       createdAt: {
         allowNull: false,

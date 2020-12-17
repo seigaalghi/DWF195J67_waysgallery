@@ -1,15 +1,23 @@
 const multer = require('multer');
 const path = require('path');
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 exports.fileUpload = (field1, field2) => {
-  const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, 'uploads');
-    },
-    filename: function (req, file, cb) {
-      cb(
-        null,
-        path.parse(file.originalname).name +
+  const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: (req, file) => {
+      return {
+        folder: `coways/${file.fieldname}s`,
+        resource_type: 'raw',
+        public_id:
+          path.parse(file.originalname).name +
           ' - ' +
           new Date().getFullYear() +
           '-' +
@@ -24,8 +32,8 @@ exports.fileUpload = (field1, field2) => {
           new Date().getSeconds() +
           '-' +
           new Date().getMilliseconds() +
-          path.extname(file.originalname)
-      );
+          path.extname(file.originalname),
+      };
     },
   });
 

@@ -28,7 +28,7 @@ exports.addProject = async (req, res) => {
         file.images.map(async (image) => {
           await ProjectImage.create({
             projectId: project.id,
-            image: image.filename,
+            image: image.path,
           });
         })
       );

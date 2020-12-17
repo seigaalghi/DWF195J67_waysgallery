@@ -131,7 +131,7 @@ exports.addPost = async (req, res) => {
         file.photos.map(async (image) => {
           await Photo.create({
             postId: post.id,
-            photo: image.filename,
+            photo: image.path,
           });
         })
       );
@@ -145,6 +145,12 @@ exports.addPost = async (req, res) => {
           {
             model: Photo,
             as: 'photos',
+            attributes: ['id', 'photo'],
+          },
+          {
+            model: User,
+            as: 'user',
+            attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
           },
         ],
       });

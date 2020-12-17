@@ -17,11 +17,15 @@ const Post = ({ post: { loading, post }, loadPost }) => {
       <Navbar />
       <div className='user'>
         <div className='img'>
-          <img src={`/api/v1/files/${post.user.avatar}`} alt='avatar' />
+          <Link to={`/profile/${post.user.id}`}>
+            <img src={`/api/v1/files/${post.user.avatar}`} alt='avatar' />
+          </Link>
         </div>
         <div className='title'>
           <h2>{post.title}</h2>
-          <h3>{post.user.name}</h3>
+          <Link to={`/profile/${post.user.id}`}>
+            <h3>{post.user.name}</h3>
+          </Link>
         </div>
         <div className='action'>
           <Fragment>
