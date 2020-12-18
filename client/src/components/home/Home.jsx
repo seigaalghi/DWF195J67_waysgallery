@@ -4,6 +4,7 @@ import { loadPosts } from '../../redux/action/post';
 import { connect } from 'react-redux';
 import Contents from './Contents';
 import { Link } from 'react-router-dom';
+import Loading from '../Loading';
 
 const Home = ({ post: { posts, loading }, loadPosts }) => {
   const [time, setTime] = useState('today');
@@ -12,7 +13,7 @@ const Home = ({ post: { posts, loading }, loadPosts }) => {
   }, [loadPosts]);
 
   return loading || !posts ? (
-    <h1>Loading</h1>
+    <Loading />
   ) : (
     <div className='home-container'>
       <Navbar />

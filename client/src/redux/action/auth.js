@@ -11,6 +11,8 @@ import {
   SEND_PROJECT,
   ADD_HIRING,
   EDIT_PROFILE,
+  ADD_ART,
+  APPROVEMENT,
 } from '../types';
 import { setAlert } from './alert';
 import setAuth from '../utility/setAuthToken';
@@ -115,7 +117,7 @@ export const userLogout = () => async (dispatch) => {
 };
 
 // =========================================================================================
-// LOAD USERS
+// Load User
 // =========================================================================================
 
 export const loadUsers = () => async (dispatch) => {
@@ -135,7 +137,7 @@ export const loadUsers = () => async (dispatch) => {
 };
 
 // =========================================================================================
-// APPROVE HIRE
+// Approve Hire
 // =========================================================================================
 
 export const approveHire = (id) => async (dispatch) => {
@@ -156,7 +158,7 @@ export const approveHire = (id) => async (dispatch) => {
 };
 
 // =========================================================================================
-// APPROVE HIRE
+// Reject Hire
 // =========================================================================================
 
 export const rejectHire = (id) => async (dispatch) => {
@@ -177,7 +179,7 @@ export const rejectHire = (id) => async (dispatch) => {
 };
 
 // =========================================================================================
-// APPROVE HIRE
+// Send Project
 // =========================================================================================
 
 export const sendProject = (id, data) => async (dispatch) => {
@@ -212,7 +214,7 @@ export const sendProject = (id, data) => async (dispatch) => {
 };
 
 // =========================================================================================
-// APPROVE HIRE
+// Add Hiring
 // =========================================================================================
 
 export const addHiring = (id, data) => async (dispatch) => {
@@ -240,17 +242,17 @@ export const addHiring = (id, data) => async (dispatch) => {
 };
 
 // =====================================================================
-// EDIT PROFILE
+// Edit Profile
 // =====================================================================
 
 export const editProfile = (data) => async (dispatch) => {
-  const { name, greeting, avatar, arts } = data;
+  const { name, greeting, avatar } = data;
   const formData = new FormData();
   formData.append('name', name);
   formData.append('greeting', greeting);
-  formData.append('avatar', avatar);
-  formData.append('arts', arts);
-
+  if (avatar) {
+    formData.append('avatar', avatar);
+  }
   const config = {
     headers: {
       'Content-type': 'multipart/form-data',
@@ -261,6 +263,55 @@ export const editProfile = (data) => async (dispatch) => {
     dispatch({
       type: EDIT_PROFILE,
       payload: res.data.data.user,
+    });
+    dispatch(setAlert(res.data.message, 'success'));
+  } catch (error) {
+    if (error.response) {
+      if (error.response.data.message) {
+        dispatch(setAlert(error.response.data.message, 'danger'));
+      }
+    }
+  }
+};
+
+// =====================================================================
+// Add Art
+// =====================================================================
+
+export const addArt = (data) => async (dispatch) => {
+  const formData = new FormData();
+  formData.append('arts', data[0]);
+  const config = {
+    headers: {
+      'Content-type': 'multipart/form-data',
+    },
+  };
+  try {
+    const res = await axios.post(`/api/v1/user/art`, formData, config);
+    dispatch({
+      type: ADD_ART,
+      payload: res.data.data.art,
+    });
+    dispatch(setAlert(res.data.message, 'success'));
+  } catch (error) {
+    if (error.response) {
+      if (error.response.data.message) {
+        dispatch(setAlert(error.response.data.message, 'danger'));
+      }
+    }
+  }
+};
+
+// =====================================================================
+// Approvement
+// =====================================================================
+
+export const approvement = (id) => async (dispatch) => {
+  try {
+    const res = await axios.put(`/api/v1/hire/approve/${id}`);
+    dispatch({
+      type: APPROVEMENT,
+      payload: { hire: res.data.data.hire, id },
     });
     dispatch(setAlert(res.data.message, 'success'));
   } catch (error) {

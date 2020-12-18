@@ -24,9 +24,7 @@ const Navbar = ({ userLogout, auth: { loading, user } }) => {
   const dropHandler = (e) => {
     setOpen(!open);
   };
-  return loading ? (
-    <Loading />
-  ) : (
+  return (
     <div className='navbar-container'>
       <div className='logo'>
         <Link to='/'>
@@ -38,7 +36,7 @@ const Navbar = ({ userLogout, auth: { loading, user } }) => {
           <div className='btn btn-primary'>Upload</div>
         </Link>
         <div className='avatar' onClick={dropHandler} ref={wrapperRef}>
-          <img src={user.avatar} alt='avatar' className='avatar' />
+          {!loading ? <img src={user.avatar} alt='avatar' className='avatar' /> : null}
           {open ? <Dropdown user={user} logout={userLogout} /> : null}
         </div>
       </div>

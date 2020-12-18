@@ -68,16 +68,11 @@ exports.fileUpload = (field1, field2) => {
   return (req, res, next) => {
     upload(req, res, (err) => {
       if (req.fileValidationError) {
-        return res.status(400).send(req.fileValidationError);
-      }
-      if (!req.files && !err) {
-        return res.status(400).send({
-          message: 'No files selected',
-        });
+        return res.status(400).json(req.fileValidationError);
       }
       if (err) {
         if (err.code === 'LIMIT_FILE_SIZE') {
-          return res.status(400).send({
+          return res.status(400).json({
             message: 'Max file size exceeded (5Mb)',
           });
         }

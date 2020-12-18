@@ -10,6 +10,8 @@ import {
   SEND_PROJECT,
   ADD_HIRING,
   EDIT_PROFILE,
+  ADD_ART,
+  APPROVEMENT,
 } from '../types';
 
 const initialState = {
@@ -88,6 +90,16 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         user: payload,
+      };
+    case ADD_ART:
+      return {
+        ...state,
+        user: { ...state.user, arts: [...state.user.arts, payload] },
+      };
+    case APPROVEMENT:
+      return {
+        ...state,
+        user: { ...state.user, offers: state.user.offers.map((offer) => (offer.id === payload.id ? payload.hire : offer)) },
       };
 
     default:

@@ -1,44 +1,68 @@
-import React, { useEffect, Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import { loadPost } from '../../redux/action/post';
+import Icon from '../iconcomp/Icon';
 import Loading from '../Loading';
 import Navbar from '../navbar/Navbar';
 
-const Post = ({ post: { loading, post }, loadPost }) => {
+const Post = ({ post: { loading, post }, loadPost, auth }) => {
+  const [big, setBig] = useState('');
   const { id } = useParams();
+
   useEffect(() => {
     loadPost(id);
   }, [loadPost]);
-  return loading || !post ? (
+
+  useEffect(() => {
+    if (post && !loading) {
+      setBig(post.photos[0].photo);
+    }
+  }, [post]);
+
+  return loading || !post || auth.loading ? (
     <Loading />
   ) : (
     <div className='post-container'>
       <Navbar />
-      <div className='user'>
-        <div className='img'>
-          <Link to={`/profile/${post.user.id}`}>
-            <img src={`/api/v1/files/${post.user.avatar}`} alt='avatar' />
+      <div className='post'>
+        <div className='user'>
+          <Link to={`/profile/${post.user.id}`} className='avatar'>
+            <img src={post.user.avatar} alt='avatar' />
+            <div className='title'>
+              <h2>{post.title}</h2>
+              <h4>{post.user.name}</h4>
+            </div>
           </Link>
+          <div className='action'>
+            {auth.user.id === post.user.id ? null : (
+              <Fragment>
+                <div className='btn btn-secondary'>Follow</div>
+                <Link to={`/hire/${post.user.id}`}>
+                  <div className='btn btn-primary'>Hire</div>
+                </Link>
+              </Fragment>
+            )}
+          </div>
         </div>
-        <div className='title'>
-          <h2>{post.title}</h2>
-          <Link to={`/profile/${post.user.id}`}>
-            <h3>{post.user.name}</h3>
-          </Link>
+        <div className='images'>
+          <div className='big'>
+            <img src={big} alt='big' />
+          </div>
+          <div className='small'>
+            {post.photos.map((photo) => (
+              <img src={photo.photo} alt='small' onClick={() => setBig(photo.photo)} />
+            ))}
+          </div>
         </div>
-        <div className='action'>
-          <Fragment>
-            <div className='btn bg-secondary'>Follow</div>
-            <Link to={`/hire/${post.user.id}`} className='btn bg-primary'>
-              Hire
-            </Link>
-          </Fragment>
-        </div>
-        <div className='project'>
-          {post.photos.map((photo) => (
-            <img src={`/api/v1/files/${photo.photo}`} alt='photo' key={photo.id} />
-          ))}
+        <div className='description'>
+          <h3>
+            <span className='color-warning'>
+              <Icon icon='fas fa-hand-sparkles' />
+            </span>{' '}
+            Say hello <span className='color-primary'>{post.user.email}</span>
+          </h3>
+          <h4>{post.description}</h4>
         </div>
       </div>
     </div>
@@ -47,6 +71,7 @@ const Post = ({ post: { loading, post }, loadPost }) => {
 
 const mapStateToProps = (state) => ({
   post: state.post,
+  auth: state.auth,
 });
 
 export default connect(mapStateToProps, { loadPost })(Post);

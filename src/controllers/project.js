@@ -2,7 +2,7 @@ const { Post, Photo, User, Project, ProjectImage, Hire } = require('../../models
 const Joi = require('joi');
 
 // =================================================================================
-// ADD POST
+// ADD Project
 // =================================================================================
 
 exports.addProject = async (req, res) => {
@@ -19,7 +19,7 @@ exports.addProject = async (req, res) => {
     if (!project) {
       return res.status(400).json({
         status: 'failed',
-        message: 'Failed to add post please try again',
+        message: 'Failed to send project please try again',
       });
     }
 
@@ -34,11 +34,11 @@ exports.addProject = async (req, res) => {
       );
     };
 
-    const update = await Hire.update({ status: 'COMPLETED' }, { where: { id: req.params.hireId } });
+    const update = await Hire.update({ status: 'WAITING' }, { where: { id: req.params.hireId } });
     if (!update) {
       res.status(400).json({
         status: 'failed',
-        message: 'Approvement failed, please try again',
+        message: 'Failed to send project, please try again',
       });
     }
 
@@ -69,7 +69,7 @@ exports.addProject = async (req, res) => {
 
       res.status(200).json({
         status: 'success',
-        message: 'Post added successfully',
+        message: 'Project sent successfully, please wait until vendor accept the project',
         data: {
           hire: response,
         },

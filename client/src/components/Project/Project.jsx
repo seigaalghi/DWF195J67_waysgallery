@@ -6,7 +6,7 @@ import Offer from './Offer';
 const Project = () => {
   const [page, setPage] = useState('ORDER');
   return (
-    <div>
+    <div className='project-container'>
       <Navbar />
       <div className='select'>
         <select name='page' onChange={(e) => setPage(e.target.value)}>

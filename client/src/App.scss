@@ -8,6 +8,7 @@ $third: #f9f9f9;
 $success: #2ecc71;
 $danger: #e74c3c;
 $warning: #f1c40f;
+$complete: #00c3ff;
 
 // ======================================================================
 // Font Import
@@ -49,8 +50,8 @@ small {
 }
 
 .App-container {
-  width: 80%;
-  margin: 130px auto;
+  width: 70%;
+  margin: 120px auto;
 }
 
 // ======================================================================
@@ -88,6 +89,9 @@ small {
 .color-secondary {
   color: $secondary;
 }
+.color-complete {
+  color: $complete;
+}
 
 .btn {
   padding: 10px 30px;
@@ -121,6 +125,7 @@ small {
 }
 .btn-primary {
   background-color: $primary;
+  color: $third;
   &:hover {
     background-color: darken($color: $primary, $amount: 5%);
   }
@@ -312,18 +317,23 @@ small {
   top: 0px;
   left: 0px;
   right: 0px;
-  padding: 10px 10%;
-  height: 120px;
+  padding: 10px 15%;
+  height: 80px;
   .menu {
     display: flex;
     align-items: center;
     a {
       margin-right: 10px;
     }
+    .btn {
+      height: 40px;
+      font-size: 15px;
+      padding: 5px 20px;
+    }
     .avatar {
       border-radius: 50%;
-      width: 70px;
-      height: 70px;
+      width: 60px;
+      height: 60px;
       &:hover {
         box-shadow: 0px 0px 5px 5px $primary;
       }
@@ -334,7 +344,7 @@ small {
     position: absolute;
     background-color: white;
     width: 195px;
-    right: 11%;
+    right: 15.3%;
     margin-top: 40px;
     display: flex;
     flex-direction: column;
@@ -382,6 +392,7 @@ small {
     border-radius: 5px;
     font-family: inherit;
     font-size: inherit;
+    padding: 5px;
   }
 }
 
@@ -392,7 +403,6 @@ small {
   grid-template-rows: 40vh;
   gap: 20px;
   .content {
-    cursor: pointer;
     height: 100%;
     width: 100%;
     background-color: $secondary;
@@ -414,18 +424,11 @@ small {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 5px 10px;
+        padding: 5px 25px;
         opacity: 0;
         transition: 0.2s;
         color: $secondary;
         border-radius: 10px;
-        .action {
-          display: flex;
-          align-items: center;
-          i {
-            margin: 0px 5px;
-          }
-        }
       }
       &:hover {
         .bottom {
@@ -442,6 +445,14 @@ small {
         display: flex;
         align-items: center;
         justify-content: space-evenly;
+        &:hover {
+          h3 {
+            text-decoration: underline;
+          }
+          img {
+            opacity: 0.7;
+          }
+        }
         img {
           max-width: 40px;
         }
@@ -500,12 +511,15 @@ small {
     'action art art'
     'project project project';
   grid-template-columns: 33.3% 33.3% 33.3%;
-  grid-template-rows: 300px 300px auto;
+  grid-template-rows: 300px 200px auto;
   .greeting {
     grid-area: greeting;
+    h1 {
+      font-size: 40px;
+    }
     .avatar {
       border-radius: 50%;
-      width: 150px;
+      width: 120px;
     }
   }
   .art {
@@ -520,11 +534,12 @@ small {
     align-items: center;
     border-radius: 10px;
     img {
-      max-width: 500px;
+      max-height: 350px;
       border-radius: 10px;
     }
   }
   .action {
+    margin-top: 40px;
     grid-area: action;
     display: flex;
     .btn {
@@ -548,6 +563,604 @@ small {
         width: 100%;
         margin: 10px;
         border-radius: 10px;
+      }
+    }
+  }
+}
+
+// ======================================================================
+// Post
+// ======================================================================
+
+.add-post {
+  position: relative;
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .form {
+    width: 70%;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 50px;
+    i {
+      font-size: 130px;
+      color: $secondary;
+    }
+    .file-input {
+      display: grid;
+      grid-template-areas: 'big big big big' 'small small small small';
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 20px;
+      label {
+        cursor: pointer;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        img {
+          max-width: 100%;
+          max-height: 100%;
+        }
+      }
+      .form-control:first-child {
+        grid-area: big;
+        height: 500px;
+        width: 100%;
+        .input-box {
+          height: 100%;
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: 5px dashed $secondary;
+        }
+        i {
+          font-size: 200px;
+          color: $secondary;
+        }
+      }
+      .form-control {
+        cursor: pointer;
+
+        .input-box {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: 5px dashed $secondary;
+          height: 150px;
+          &:hover {
+            border: 5px dashed $primary;
+            i {
+              color: $primary;
+            }
+          }
+        }
+        .input-file {
+          display: none;
+        }
+      }
+    }
+    .input-text {
+      .form-control {
+        display: flex;
+        flex-direction: column;
+        label {
+          font-weight: 600;
+          font-size: 20px;
+        }
+        .input {
+          width: 100%;
+          height: 50px;
+          display: flex;
+          align-items: center;
+          padding: 8px;
+          background-color: $secondary;
+          border-radius: 5px;
+          margin: 10px 0px;
+          border: 2px solid $primary;
+          font-family: inherit;
+          font-size: inherit;
+        }
+        .text-area {
+          height: 200px;
+        }
+      }
+      display: flex;
+      flex-direction: column;
+    }
+  }
+  .btn {
+    margin: 10px 0px;
+  }
+  small {
+    margin-top: -10px;
+    margin-bottom: 2px;
+  }
+}
+
+// ======================================================================
+// Edit Profile
+// ======================================================================
+
+.edit-profile {
+  .input-zone {
+    margin: 200px auto 0px auto;
+    width: 80%;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    align-content: center;
+    justify-items: center;
+    .drop {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .drop-zone {
+        border: 10px dashed $secondary;
+        cursor: pointer;
+        width: 80%;
+        height: 600px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        p {
+          font-size: 40px;
+        }
+        &:hover {
+          border: 10px dashed $primary;
+        }
+      }
+    }
+    .form {
+      width: 80%;
+      display: flex;
+      flex-direction: column;
+      input {
+        width: 100%;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        padding: 8px;
+        background-color: $secondary;
+        border-radius: 5px;
+        margin: 10px 0px;
+        border: 2px solid $primary;
+        font-family: inherit;
+        font-size: inherit;
+      }
+      textarea {
+        width: 100%;
+        height: 150px;
+        display: flex;
+        align-items: center;
+        padding: 8px;
+        background-color: $secondary;
+        border-radius: 5px;
+        margin: 10px 0px;
+        border: 2px solid $primary;
+        font-family: inherit;
+        font-size: inherit;
+      }
+      .file-input {
+        overflow: hidden;
+        img {
+          max-width: 100%;
+        }
+        cursor: pointer;
+        input {
+          display: none;
+        }
+        i {
+          font-size: 100px;
+          color: $secondary;
+        }
+        margin: 10px auto;
+        display: flex;
+        height: 200px;
+        width: 200px;
+        border-radius: 50%;
+        border: 10px dashed $secondary;
+        align-items: center;
+        justify-content: center;
+        &:hover {
+          i {
+            color: $primary;
+          }
+          border: 10px dashed $primary;
+        }
+      }
+    }
+  }
+  small {
+    margin-top: -10px;
+    margin-bottom: 2px;
+  }
+  .btn {
+    margin-bottom: 10px;
+  }
+}
+
+// ======================================================================
+// Post
+// ======================================================================
+
+.post-container {
+  .post {
+    display: grid;
+    gap: 50px;
+    width: 80%;
+    margin: 0px auto;
+    grid-template-areas: 'user' 'images' 'desc';
+    grid-template-columns: 100%;
+    .user {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .avatar {
+        display: flex;
+        align-items: center;
+        img {
+          max-width: 80px;
+          border-radius: 50%;
+          margin-right: 20px;
+        }
+      }
+      .action {
+        display: flex;
+        div {
+          margin-right: 10px;
+        }
+      }
+    }
+    .images {
+      img {
+        border-radius: 5px;
+      }
+      display: grid;
+      grid-template-areas: 'big' 'small';
+      grid-template-columns: 100%;
+      .big {
+        grid-area: big;
+        width: 80%;
+        margin: 0px auto;
+        img {
+          width: 100%;
+        }
+      }
+      .small {
+        width: 80%;
+        margin: 10px auto;
+        grid-area: small;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+        gap: 20px;
+        img {
+          cursor: pointer;
+          max-width: 100%;
+          &:hover {
+            opacity: 0.8;
+            transform: scale(1.1);
+          }
+        }
+      }
+    }
+    .description {
+      width: 80%;
+      margin: 0px auto;
+      h3 {
+        margin-bottom: 30px;
+      }
+    }
+  }
+}
+
+// ======================================================================
+// Add Hire
+// ======================================================================
+
+.hire-container {
+  width: 80%;
+  margin: 10px auto;
+  h1 {
+    width: 80%;
+    margin: 10px auto;
+  }
+  .form {
+    display: grid;
+    grid-template-areas:
+      'title title'
+      'description description'
+      'description description'
+      'start end'
+      'price price';
+    width: 80%;
+    gap: 10px;
+    margin: 10px auto;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+    .form-control {
+      height: 90px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      input,
+      textarea {
+        height: 50px;
+        border-radius: 5px;
+        border: 2px solid $primary;
+        background-color: $secondary;
+        padding: 8px;
+        font-size: inherit;
+        font-family: inherit;
+      }
+    }
+    .form-control:nth-child(1) {
+      grid-area: title;
+    }
+    .form-control:nth-child(2) {
+      grid-area: description;
+      height: 100%;
+      textarea {
+        height: 140px;
+      }
+    }
+    .form-control:nth-child(3) {
+      grid-area: start;
+    }
+    .form-control:nth-child(4) {
+      grid-area: end;
+    }
+    .form-control:nth-child(5) {
+      grid-area: price;
+    }
+    .btn {
+      margin-top: 20px;
+    }
+  }
+  label {
+    font-weight: 600;
+  }
+}
+
+// ======================================================================
+// Order
+// ======================================================================
+
+.project-container {
+  width: 80%;
+  margin: 10px auto;
+  font-weight: 500;
+  .content {
+    margin: 10px auto;
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      text-align: center;
+    }
+
+    table,
+    th,
+    td {
+      border: 1px solid black;
+      height: 50px;
+    }
+
+    td:nth-child(1) {
+      width: 5%;
+    }
+    td:nth-child(2) {
+      width: 15%;
+    }
+    td:nth-child(3) {
+      width: 25%;
+      span {
+        color: $complete;
+        cursor: pointer;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+    td:nth-child(4) {
+      width: 10%;
+    }
+    td:nth-child(5) {
+      width: 10%;
+    }
+    td:nth-child(6) {
+      width: 10%;
+    }
+    td:nth-child(7) {
+      width: 100%;
+      .btn {
+        margin: 5px;
+        display: inline-block;
+      }
+    }
+
+    tr {
+      &:hover {
+        background-color: darken($color: $third, $amount: 5%);
+      }
+      background-color: white;
+    }
+
+    th {
+      background-color: $primary;
+      height: 50px;
+    }
+  }
+  select,
+  option {
+    width: 150px;
+    height: 40px;
+    text-align: center;
+    background-color: $secondary;
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: inherit;
+    padding: 5px;
+  }
+  i {
+    font-size: 30px;
+  }
+}
+
+// ======================================================================
+// Loading
+// ======================================================================
+
+.loading-spinner {
+  position: fixed;
+  top: 0px;
+  bottom: 0px;
+  right: 0px;
+  left: 0px;
+  background-color: rgba(255, 255, 255, 0.76);
+  z-index: 91;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  img {
+    -webkit-animation-name: spinner;
+    -webkit-animation-timing-function: linear;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-duration: 1s;
+
+    animation-name: spinner;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-duration: 1s;
+
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    -ms-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+  }
+}
+
+@-webkit-keyframes spinner {
+  from {
+    -webkit-transform: rotateY(0deg);
+  }
+  to {
+    -webkit-transform: rotateY(-360deg);
+  }
+}
+
+@keyframes spinner {
+  from {
+    -moz-transform: rotateY(0deg);
+    -ms-transform: rotateY(0deg);
+    transform: rotateY(0deg);
+  }
+  to {
+    -moz-transform: rotateY(-360deg);
+    -ms-transform: rotateY(-360deg);
+    transform: rotateY(-360deg);
+  }
+}
+
+// ======================================================================
+// View Project
+// ======================================================================
+
+.project-container {
+  width: 100%;
+
+  .project {
+    display: grid;
+    width: 90%;
+    margin: 30px auto;
+    grid-template-columns: 70% 30%;
+    gap: 20px;
+    .project-image {
+      display: grid;
+      grid-template-areas: 'big big big big big' 'small small small small small';
+      gap: 10px;
+      .big {
+        grid-area: big;
+        align-content: center;
+        justify-items: center;
+        img {
+          max-width: 90%;
+          border-radius: 10px;
+        }
+      }
+      .small {
+        grid-area: small;
+        display: grid;
+        width: 90%;
+        grid-template-columns: 20% 20% 20% 20% 20%;
+        img {
+          max-width: 90%;
+          border-radius: 5px;
+          transition: 0.2s;
+          cursor: pointer;
+          &:hover {
+            transform: scale(1.1);
+            opacity: 0.8;
+          }
+        }
+      }
+    }
+    .project-text {
+      h2 {
+        margin-bottom: 20px;
+      }
+      p {
+        margin-bottom: 50px;
+      }
+      .btn {
+        width: 50%;
+        height: 40px;
+        font-size: 15px;
+        margin: 10px auto;
+        i {
+          font-size: 20px;
+          margin-left: 5px;
+        }
+      }
+    }
+  }
+}
+
+// ======================================================================
+// Approvement
+// ======================================================================
+
+.approvement-container {
+  position: fixed;
+  z-index: 5;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  background-color: #ffffffbb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .approvement {
+    width: 600px;
+    height: 300px;
+    background-color: white;
+    padding: 50px;
+    border-radius: 10px;
+    border: 1px solid $primary;
+    h3 {
+      margin-bottom: 20px;
+    }
+    p {
+      margin-bottom: 30px;
+    }
+    .action {
+      display: flex;
+      width: 100%;
+      justify-content: flex-end;
+      margin-top: 40px;
+      .btn {
+        margin-left: 10px;
       }
     }
   }
