@@ -329,6 +329,7 @@ exports.addComment = async (req, res) => {
   const postId = req.params.id;
   const { id } = req.user;
   const { body } = req;
+  console.log(body);
   try {
     const schema = Joi.object({
       comment: Joi.string().required('Text is required'),
@@ -355,9 +356,10 @@ exports.addComment = async (req, res) => {
       include: {
         model: User,
         as: 'user',
-        attributes: ['id', 'name'],
+        attributes: ['id', 'name', 'avatar'],
       },
     });
+
     res.status(200).json({
       status: 'success',
       message: 'Comment posted successfully',

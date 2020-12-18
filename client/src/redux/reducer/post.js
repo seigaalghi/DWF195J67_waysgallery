@@ -1,4 +1,4 @@
-import { LOAD_POSTS, LOAD_POST, ADD_POST, LIKE_POST, DISLIKE_POST } from '../types';
+import { LOAD_POSTS, LOAD_POST, ADD_POST, LIKE_POST, DISLIKE_POST, COMMENT_POST, DELETE_COMMENT } from '../types';
 
 const initialState = {
   post: null,
@@ -28,7 +28,6 @@ const postReducer = (state = initialState, action) => {
         loading: false,
       };
     case LIKE_POST:
-      console.log(payload);
       return {
         ...state,
         posts: state.posts.map((post) => (post.id === payload.id ? { ...post, likes: [...post.likes, payload.like] } : post)),
@@ -40,6 +39,18 @@ const postReducer = (state = initialState, action) => {
         posts: state.posts.map((post) =>
           post.id === payload.id ? { ...post, likes: post.likes.filter((like) => like.user.id !== payload.userId) } : post
         ),
+        loading: false,
+      };
+    case COMMENT_POST:
+      return {
+        ...state,
+        post: { ...state.post, comments: [payload, ...state.post.comments] },
+        loading: false,
+      };
+    case DELETE_COMMENT:
+      return {
+        ...state,
+        post: { ...state.post, comments: state.post.comments.filter((comment) => comment.id !== parseInt(payload)) },
         loading: false,
       };
     default:

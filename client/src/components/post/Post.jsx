@@ -2,17 +2,22 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import { follow, unfollow } from '../../redux/action/auth';
-import { loadPost } from '../../redux/action/post';
+import { addComment, loadPost, removeComment } from '../../redux/action/post';
 import Icon from '../iconcomp/Icon';
 import Loading from '../Loading';
 import Navbar from '../navbar/Navbar';
 
-const Post = ({ post: { loading, post }, loadPost, auth, follow, unfollow }) => {
+const Post = ({ post: { loading, post }, loadPost, auth, follow, unfollow, addComment, removeComment }) => {
   const [big, setBig] = useState('');
   const { id } = useParams();
   const [comment, setComment] = useState({
     comment: '',
   });
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    addComment(comment, post.id);
+  };
 
   useEffect(() => {
     loadPost(id);
@@ -63,7 +68,7 @@ const Post = ({ post: { loading, post }, loadPost, auth, follow, unfollow }) => 
           </div>
           <div className='small'>
             {post.photos.map((photo) => (
-              <img src={photo.photo} alt='small' onClick={() => setBig(photo.photo)} />
+              <img src={photo.photo} alt='small' onClick={() => setBig(photo.photo)} key={photo.id} />
             ))}
           </div>
         </div>
@@ -77,21 +82,27 @@ const Post = ({ post: { loading, post }, loadPost, auth, follow, unfollow }) => 
           <h4>{post.description}</h4>
         </div>
         <hr />
-        <form className='comment-form'>
+        <form className='comment-form' onSubmit={onSubmit}>
           <textarea value={comment.comment} onChange={(e) => setComment({ comment: e.target.value })} placeholder='Write your comments here' />
           <button className='btn btn-primary'>Send</button>
         </form>
         <hr />
         <div className='comments'>
           {post.comments.map((comment) => (
-            <div className='comment'>
+            <div className='comment' key={comment.id}>
               <Link to={`/profile/${comment.user.id}`} className='user'>
                 <img src={comment.user.avatar} alt='avatar' />
                 <h3>{comment.user.name}</h3>
               </Link>
               <div className='text'>
                 <p>"{comment.comment}"</p>
-                <div className='btn btn-danger'>Delete</div>
+                {!auth.loading ? (
+                  comment.user.id === auth.user.id ? (
+                    <div className='btn btn-danger' onClick={() => removeComment(comment.id)}>
+                      Delete
+                    </div>
+                  ) : null
+                ) : null}
               </div>
             </div>
           ))}
@@ -106,4 +117,4 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, { loadPost, follow, unfollow })(Post);
+export default connect(mapStateToProps, { loadPost, follow, unfollow, addComment, removeComment })(Post);

@@ -1,4 +1,4 @@
-import { LOAD_POSTS, LOAD_POST, ADD_POST, LIKE_POST, DISLIKE_POST } from '../types';
+import { LOAD_POSTS, LOAD_POST, ADD_POST, LIKE_POST, DISLIKE_POST, COMMENT_POST, DELETE_COMMENT } from '../types';
 import axios from 'axios';
 import { setAlert } from './alert';
 
@@ -89,6 +89,46 @@ export const dislikePost = (id, userId) => async (dispatch) => {
     dispatch({
       type: DISLIKE_POST,
       payload: { id, userId },
+    });
+  } catch (error) {
+    if (error.response) {
+      if (error.response.data.message) {
+        dispatch(setAlert(error.response.data.message, 'danger'));
+      }
+    }
+  }
+};
+
+export const addComment = (data, id) => async (dispatch) => {
+  const config = {
+    headers: {
+      'Content-type': 'application/json',
+    },
+  };
+  const body = JSON.stringify(data);
+  try {
+    const res = await axios.post(`/api/v1/post/comment/${id}`, body, config);
+    dispatch({
+      type: COMMENT_POST,
+      payload: res.data.data.comment,
+    });
+    dispatch(setAlert(res.data.message, 'success'));
+  } catch (error) {
+    console.log(error);
+    if (error.response) {
+      if (error.response.data.message) {
+        dispatch(setAlert(error.response.data.message, 'danger'));
+      }
+    }
+  }
+};
+
+export const removeComment = (id) => async (dispatch) => {
+  try {
+    await axios.delete(`/api/v1/post/comment/${id}`);
+    dispatch({
+      type: DELETE_COMMENT,
+      payload: id,
     });
   } catch (error) {
     if (error.response) {
