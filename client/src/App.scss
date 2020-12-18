@@ -468,6 +468,27 @@ small {
         i {
           margin: 0px 5px;
         }
+        div {
+          display: flex;
+          align-items: center;
+          .fa-comment {
+            &:hover {
+              color: $primary;
+            }
+          }
+          .fa-heart {
+            cursor: pointer;
+            &:hover {
+              color: $danger;
+            }
+          }
+          .fa-heart.color-danger {
+            cursor: pointer;
+            &:hover {
+              color: black;
+            }
+          }
+        }
       }
     }
   }
@@ -853,6 +874,70 @@ small {
       h3 {
         margin-bottom: 30px;
       }
+    }
+  }
+  .comments {
+    .comment {
+      display: grid;
+      grid-template-areas: 'user' 'text';
+      background-color: white;
+      border-top: 2px solid $primary;
+      border-bottom: 2px solid $primary;
+      .user {
+        grid-area: user;
+        justify-content: start;
+        border-bottom: 3px solid $secondary;
+        padding: 10px;
+        &:hover {
+          h3 {
+            text-decoration: underline;
+          }
+          img {
+            opacity: 0.8;
+          }
+        }
+        h3 {
+          margin-left: 20px;
+        }
+        img {
+          max-width: 40px;
+          border-radius: 50%;
+        }
+      }
+      .text {
+        grid-area: text;
+        display: grid;
+        grid-template-columns: 92% 8%;
+        padding: 10px;
+        box-sizing: border-box;
+        p {
+          align-self: center;
+        }
+        .btn {
+          align-self: center;
+          height: 80%;
+          width: 80%;
+          color: $third;
+        }
+      }
+    }
+  }
+  .comment-form {
+    textarea {
+      width: 100%;
+      height: 80px;
+      background-color: $secondary;
+      border: 2px solid $primary;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      font-size: inherit;
+      font-family: inherit;
+      padding: 10px;
+    }
+    .btn {
+      width: 100%;
+      height: 30px;
+      color: $third;
     }
   }
 }

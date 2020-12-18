@@ -1,8 +1,10 @@
 import React from 'react';
 import Icon from '../iconcomp/Icon';
 import { Link } from 'react-router-dom';
+import { dislikePost, likePost } from '../../redux/action/post';
+import { connect } from 'react-redux';
 
-const Contents = ({ contents }) => {
+const Contents = ({ contents, likePost, dislikePost, auth: { loading, user } }) => {
   return (
     <div>
       <div className='contents'>
@@ -19,8 +21,28 @@ const Contents = ({ contents }) => {
                 <h3>{post.user.name}</h3>
               </Link>
               <div className='action'>
-                <Icon icon='fas fa-comment' />
-                <Icon icon='fas fa-heart' />
+                <div>
+                  <Link to={`/post/${post.id}`}>
+                    <Icon icon='fas fa-comment' />
+                  </Link>
+                  {post.comments.length > 0 ? <span>{post.comments.length}</span> : null}
+                </div>
+                {!loading ? (
+                  post.likes.find((like) => {
+                    console.log(like);
+                    return like.user.id == user.id;
+                  }) ? (
+                    <div onClick={() => dislikePost(post.id, user.id)}>
+                      <Icon icon='fas fa-heart color-danger' />
+                      {post.likes.length > 0 ? <span>{post.likes.length}</span> : null}
+                    </div>
+                  ) : (
+                    <div onClick={() => likePost(post.id)}>
+                      <Icon icon='fas fa-heart' />
+                      {post.likes.length > 0 ? <span>{post.likes.length}</span> : null}
+                    </div>
+                  )
+                ) : null}
               </div>
             </div>
           </div>
@@ -30,4 +52,8 @@ const Contents = ({ contents }) => {
   );
 };
 
-export default Contents;
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps, { likePost, dislikePost })(Contents);

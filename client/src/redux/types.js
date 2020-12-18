@@ -19,6 +19,8 @@ export const ADD_HIRING = 'ADD_HIRING';
 export const EDIT_PROFILE = 'EDIT_PROFILE';
 export const ADD_ART = 'ADD_ART';
 export const APPROVEMENT = 'APPROVEMENT';
+export const FOLLOW = 'FOLLOW';
+export const UNFOLLOW = 'UNFOLLOW';
 
 // =====================================================
 // ALERT TYPES
@@ -35,6 +37,10 @@ export const SET_UPLOAD = 'SET_UPLOAD';
 export const LOAD_POST = 'LOAD_POST';
 export const LOAD_POSTS = 'LOAD_POSTS';
 export const ADD_POST = 'ADD_POST';
+export const LIKE_POST = 'LIKE_POST';
+export const DISLIKE_POST = 'DISLIKE_POST';
+export const COMMENT_POST = 'COMMENT_POST';
+export const DELETE_COMMENT = 'DELETE_COMMENT';
 
 // =====================================================
 // PROFILE TYPES

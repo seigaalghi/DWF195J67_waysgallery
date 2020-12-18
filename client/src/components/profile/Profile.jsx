@@ -5,12 +5,13 @@ import { loadProfileById } from '../../redux/action/profile';
 import { Link, useParams } from 'react-router-dom';
 import Loading from '../Loading';
 import Contents from '../home/Contents';
+import { follow, unfollow } from '../../redux/action/auth';
 
-const Profile = ({ loadProfileById, profile: { loading, profile }, auth }) => {
+const Profile = ({ loadProfileById, profile: { loading, profile }, auth, follow, unfollow }) => {
   const { id } = useParams();
   useEffect(() => {
     loadProfileById(id);
-  }, [loadProfileById]);
+  }, [loadProfileById, id]);
   return loading || auth.loading ? (
     <Loading />
   ) : (
@@ -22,13 +23,21 @@ const Profile = ({ loadProfileById, profile: { loading, profile }, auth }) => {
         <h1>{profile.greeting}</h1>
       </div>
       <div className='action'>
-        {parseInt(auth.user.id) === parseInt(id) ? (
+        {auth.user.id === parseInt(id) ? (
           <Link to='/edit-profile'>
             <div className='btn btn-primary'>Edit Profile</div>
           </Link>
         ) : (
           <Fragment>
-            <div className='btn btn-secondary'>Follow</div>
+            {auth.user.following.find((follow) => follow.followedUser.id === profile.id) ? (
+              <div className='btn btn-secondary' onClick={() => unfollow(profile.id)}>
+                Unfollow
+              </div>
+            ) : (
+              <div className='btn btn-secondary' onClick={() => follow(profile.id)}>
+                Follow
+              </div>
+            )}
             <Link to={`/hire/${profile.id}`}>
               <div className='btn btn-primary'>Hire</div>
             </Link>
@@ -53,4 +62,4 @@ const mapStateToProps = (state) => ({
   profile: state.profile,
 });
 
-export default connect(mapStateToProps, { loadProfileById })(Profile);
+export default connect(mapStateToProps, { loadProfileById, follow, unfollow })(Profile);

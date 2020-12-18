@@ -1,4 +1,4 @@
-const { Post, Photo, User } = require('../../models');
+const { Post, Photo, User, PostLike, PostComment } = require('../../models');
 const Joi = require('joi');
 
 // =================================================================================
@@ -19,6 +19,26 @@ exports.getPosts = async (req, res) => {
           model: User,
           as: 'user',
           attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
+        },
+        {
+          model: PostLike,
+          as: 'likes',
+          attributes: ['id'],
+          include: {
+            model: User,
+            as: 'user',
+            attributes: ['id', 'name'],
+          },
+        },
+        {
+          model: PostComment,
+          as: 'comments',
+          attributes: { exclude: ['updatedAt'] },
+          include: {
+            model: User,
+            as: 'user',
+            attributes: ['id', 'name'],
+          },
         },
       ],
     });
@@ -60,6 +80,26 @@ exports.getPost = async (req, res) => {
           as: 'user',
           attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
         },
+        {
+          model: PostLike,
+          as: 'likes',
+          attributes: { exclude: ['updatedAt'] },
+          include: {
+            model: User,
+            as: 'user',
+            attributes: ['id', 'name'],
+          },
+        },
+        {
+          model: PostComment,
+          as: 'comments',
+          attributes: { exclude: ['updatedAt'] },
+          include: {
+            model: User,
+            as: 'user',
+            attributes: ['id', 'name', 'avatar'],
+          },
+        },
       ],
     });
 
@@ -95,15 +135,14 @@ exports.getPost = async (req, res) => {
 exports.addPost = async (req, res) => {
   const body = req.body;
   const file = req.files;
-  console.log('INI FILE', file);
   try {
     const schema = Joi.object({
-      title: Joi.string().required(),
-      description: Joi.string().required(),
-      photos: Joi.array().required(),
+      title: Joi.string().required('Title is required'),
+      description: Joi.string().required('Description is required'),
+      photos: Joi.string().required('Please select at least one photo'),
     });
 
-    const { error } = schema.validate({ ...req.body, photos: req.files.photos }, { abortEarly: false });
+    const { error } = schema.validate({ ...req.body, photos: file.photos[0].path }, { abortEarly: false });
 
     if (error) {
       return res.status(400).send({
@@ -152,6 +191,26 @@ exports.addPost = async (req, res) => {
             as: 'user',
             attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
           },
+          {
+            model: PostLike,
+            as: 'likes',
+            attributes: { exclude: ['updatedAt'] },
+            include: {
+              model: User,
+              as: 'user',
+              attributes: ['id', 'name'],
+            },
+          },
+          {
+            model: PostComment,
+            as: 'comments',
+            attributes: { exclude: ['updatedAt'] },
+            include: {
+              model: User,
+              as: 'user',
+              attributes: ['id', 'name'],
+            },
+          },
         ],
       });
 
@@ -162,6 +221,182 @@ exports.addPost = async (req, res) => {
           post: response,
         },
       });
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      status: 'error',
+      error: {
+        message: 'Internal Server Error',
+      },
+    });
+  }
+};
+
+// =================================================================================
+// Add Like
+// =================================================================================
+
+exports.addLike = async (req, res) => {
+  const user = req.user;
+  const { id } = req.params;
+  try {
+    const checking = await PostLike.findOne({
+      where: {
+        userId: user.id,
+        postId: id,
+      },
+    });
+
+    if (checking) {
+      return res.status(400).json({
+        status: 'failed',
+        message: 'Already Liked',
+      });
+    }
+
+    const like = await PostLike.create({
+      userId: user.id,
+      postId: id,
+    });
+
+    const response = await PostLike.findOne({
+      where: { id: like.dataValues.id },
+      include: {
+        model: User,
+        as: 'user',
+        attributes: ['id', 'name'],
+      },
+    });
+    res.status(200).json({
+      status: 'success',
+      message: 'Liked successfully',
+      data: {
+        like: response,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      status: 'error',
+      error: {
+        message: 'Internal Server Error',
+      },
+    });
+  }
+};
+
+// =================================================================================
+// Remove Like
+// =================================================================================
+
+exports.removeLike = async (req, res) => {
+  const user = req.user;
+  const { id } = req.params;
+  try {
+    const like = await PostLike.destroy({
+      where: {
+        userId: user.id,
+        postId: id,
+      },
+    });
+    if (!like) {
+      res.status(400).json({
+        status: 'failed',
+        message: 'Failed to dislike the post',
+      });
+    }
+    res.status(200).json({
+      status: 'success',
+      message: 'Disliked successfully',
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      status: 'error',
+      error: {
+        message: 'Internal Server Error',
+      },
+    });
+  }
+};
+
+// =================================================================================
+// Add Comment
+// =================================================================================
+
+exports.addComment = async (req, res) => {
+  const postId = req.params.id;
+  const { id } = req.user;
+  const { body } = req;
+  try {
+    const schema = Joi.object({
+      comment: Joi.string().required('Text is required'),
+    });
+
+    const { error } = schema.validate({ ...body }, { abortEarly: false });
+
+    if (error) {
+      return res.status(400).send({
+        status: 'failed',
+        message: error.details[0].message,
+        errors: error.details.map((detail) => detail.message),
+      });
+    }
+
+    const comment = await PostComment.create({
+      comment: body.comment,
+      userId: id,
+      postId,
+    });
+
+    const response = await PostComment.findOne({
+      where: { id: comment.dataValues.id },
+      include: {
+        model: User,
+        as: 'user',
+        attributes: ['id', 'name'],
+      },
+    });
+    res.status(200).json({
+      status: 'success',
+      message: 'Comment posted successfully',
+      data: {
+        comment: response,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      status: 'error',
+      error: {
+        message: 'Internal Server Error',
+      },
+    });
+  }
+};
+
+// =================================================================================
+// Remove Comment
+// =================================================================================
+
+exports.removeComment = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const comment = await PostComment.destroy({
+      where: {
+        id,
+      },
+    });
+    if (!comment) {
+      res.status(400).json({
+        status: 'failed',
+        message: 'Failed to delete the comment',
+      });
+    }
+    res.status(200).json({
+      status: 'success',
+      message: 'Deleted successfully',
     });
   } catch (error) {
     console.log(error);

@@ -1,7 +1,8 @@
-const { Post, Photo, User, Project, ProjectImage, Hire } = require('../../models');
+const { User, Project, ProjectImage, Hire } = require('../../models');
 
 exports.approveHire = async (req, res) => {
   const { id } = req.params;
+  const user = req.user;
   try {
     const hire = await Hire.findOne({ where: { id } });
     if (!hire) {
@@ -10,6 +11,14 @@ exports.approveHire = async (req, res) => {
         message: 'Hire not found',
       });
     }
+
+    if (hire.orderTo !== user.id) {
+      res.status(400).json({
+        status: 'failed',
+        message: "You don't have the right",
+      });
+    }
+
     const update = await Hire.update({ status: 'APPROVED' }, { where: { id: id } });
     if (!update) {
       res.status(400).json({
@@ -62,6 +71,7 @@ exports.approveHire = async (req, res) => {
 
 exports.rejectHire = async (req, res) => {
   const { id } = req.params;
+  const user = req.user;
   try {
     const hire = await Hire.findOne({ where: { id } });
     if (!hire) {
@@ -70,6 +80,14 @@ exports.rejectHire = async (req, res) => {
         message: 'Hire not found',
       });
     }
+
+    if (hire.orderTo !== user.id) {
+      res.status(400).json({
+        status: 'failed',
+        message: "You don't have the right",
+      });
+    }
+
     const update = await Hire.update({ status: 'CANCELED' }, { where: { id: id } });
     if (!update) {
       res.status(400).json({
@@ -124,6 +142,12 @@ exports.createHire = async (req, res) => {
   const { id } = req.user;
   const body = req.body;
   try {
+    if (id == body.orderTo) {
+      res.status(400).json({
+        status: 'failed',
+        message: "You can't hire yourself",
+      });
+    }
     const hire = await Hire.create({
       ...body,
       orderBy: id,
@@ -179,6 +203,7 @@ exports.createHire = async (req, res) => {
 
 exports.completeHire = async (req, res) => {
   const { id } = req.params;
+  const user = req.user;
   try {
     const hire = await Hire.findOne({ where: { id } });
     if (!hire) {
@@ -187,6 +212,14 @@ exports.completeHire = async (req, res) => {
         message: 'Hire not found',
       });
     }
+
+    if (hire.orderBy != user.id) {
+      res.status(400).json({
+        status: 'failed',
+        message: "You don't have the right",
+      });
+    }
+
     const update = await Hire.update({ status: 'COMPLETED' }, { where: { id: id } });
     if (!update) {
       res.status(400).json({

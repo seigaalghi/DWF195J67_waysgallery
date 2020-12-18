@@ -1,4 +1,4 @@
-import { LOAD_POSTS, LOAD_POST, ADD_POST } from '../types';
+import { LOAD_POSTS, LOAD_POST, ADD_POST, LIKE_POST, DISLIKE_POST } from '../types';
 import axios from 'axios';
 import { setAlert } from './alert';
 
@@ -10,11 +10,15 @@ export const loadPost = (id) => async (dispatch) => {
       payload: res.data.data.post,
     });
   } catch (error) {
-    console.log(error);
+    if (error.response) {
+      if (error.response.data.message) {
+        dispatch(setAlert(error.response.data.message, 'danger'));
+      }
+    }
   }
 };
 
-export const loadPosts = (id) => async (dispatch) => {
+export const loadPosts = () => async (dispatch) => {
   try {
     const res = await axios.get(`/api/v1/posts`);
     dispatch({
@@ -22,7 +26,11 @@ export const loadPosts = (id) => async (dispatch) => {
       payload: res.data.data.posts,
     });
   } catch (error) {
-    console.log(error);
+    if (error.response) {
+      if (error.response.data.message) {
+        dispatch(setAlert(error.response.data.message, 'danger'));
+      }
+    }
   }
 };
 
@@ -51,6 +59,42 @@ export const addPost = (data) => async (dispatch) => {
     });
     dispatch(setAlert(res.data.message, 'success'));
   } catch (error) {
-    console.log(error);
+    if (error.response) {
+      if (error.response.data.message) {
+        dispatch(setAlert(error.response.data.message, 'danger'));
+      }
+    }
+  }
+};
+
+export const likePost = (id) => async (dispatch) => {
+  try {
+    const res = await axios.post(`/api/v1/post/like/${id}`);
+    dispatch({
+      type: LIKE_POST,
+      payload: { like: res.data.data.like, id },
+    });
+  } catch (error) {
+    if (error.response) {
+      if (error.response.data.message) {
+        dispatch(setAlert(error.response.data.message, 'danger'));
+      }
+    }
+  }
+};
+
+export const dislikePost = (id, userId) => async (dispatch) => {
+  try {
+    await axios.delete(`/api/v1/post/like/${id}`);
+    dispatch({
+      type: DISLIKE_POST,
+      payload: { id, userId },
+    });
+  } catch (error) {
+    if (error.response) {
+      if (error.response.data.message) {
+        dispatch(setAlert(error.response.data.message, 'danger'));
+      }
+    }
   }
 };

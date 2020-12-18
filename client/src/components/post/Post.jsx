@@ -1,14 +1,18 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
+import { follow, unfollow } from '../../redux/action/auth';
 import { loadPost } from '../../redux/action/post';
 import Icon from '../iconcomp/Icon';
 import Loading from '../Loading';
 import Navbar from '../navbar/Navbar';
 
-const Post = ({ post: { loading, post }, loadPost, auth }) => {
+const Post = ({ post: { loading, post }, loadPost, auth, follow, unfollow }) => {
   const [big, setBig] = useState('');
   const { id } = useParams();
+  const [comment, setComment] = useState({
+    comment: '',
+  });
 
   useEffect(() => {
     loadPost(id);
@@ -37,7 +41,15 @@ const Post = ({ post: { loading, post }, loadPost, auth }) => {
           <div className='action'>
             {auth.user.id === post.user.id ? null : (
               <Fragment>
-                <div className='btn btn-secondary'>Follow</div>
+                {auth.user.following.find((follow) => follow.followedUser.id === post.user.id) ? (
+                  <div className='btn btn-secondary' onClick={() => unfollow(post.user.id)}>
+                    Unfollow
+                  </div>
+                ) : (
+                  <div className='btn btn-secondary' onClick={() => follow(post.user.id)}>
+                    Follow
+                  </div>
+                )}
                 <Link to={`/hire/${post.user.id}`}>
                   <div className='btn btn-primary'>Hire</div>
                 </Link>
@@ -64,6 +76,26 @@ const Post = ({ post: { loading, post }, loadPost, auth }) => {
           </h3>
           <h4>{post.description}</h4>
         </div>
+        <hr />
+        <form className='comment-form'>
+          <textarea value={comment.comment} onChange={(e) => setComment({ comment: e.target.value })} placeholder='Write your comments here' />
+          <button className='btn btn-primary'>Send</button>
+        </form>
+        <hr />
+        <div className='comments'>
+          {post.comments.map((comment) => (
+            <div className='comment'>
+              <Link to={`/profile/${comment.user.id}`} className='user'>
+                <img src={comment.user.avatar} alt='avatar' />
+                <h3>{comment.user.name}</h3>
+              </Link>
+              <div className='text'>
+                <p>"{comment.comment}"</p>
+                <div className='btn btn-danger'>Delete</div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -74,4 +106,4 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, { loadPost })(Post);
+export default connect(mapStateToProps, { loadPost, follow, unfollow })(Post);

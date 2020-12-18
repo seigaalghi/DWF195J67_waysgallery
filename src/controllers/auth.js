@@ -1,4 +1,4 @@
-const { User, Post, Hire, Photo, Art, ProjectImage, Project } = require('../../models');
+const { User, Post, Hire, Photo, Art, ProjectImage, Project, PostLike, PostComment, Follow } = require('../../models');
 const Joi = require('joi');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -160,10 +160,32 @@ exports.loadUser = async (req, res) => {
         {
           model: Post,
           as: 'posts',
-          include: {
-            model: Photo,
-            as: 'photos',
-          },
+          include: [
+            {
+              model: Photo,
+              as: 'photos',
+            },
+            {
+              model: PostLike,
+              as: 'likes',
+              attributes: { exclude: ['updatedAt'] },
+              include: {
+                model: User,
+                as: 'user',
+                attributes: ['id', 'name'],
+              },
+            },
+            {
+              model: PostComment,
+              as: 'comments',
+              attributes: { exclude: ['updatedAt'] },
+              include: {
+                model: User,
+                as: 'user',
+                attributes: ['id', 'name'],
+              },
+            },
+          ],
         },
         {
           model: Hire,
@@ -216,6 +238,26 @@ exports.loadUser = async (req, res) => {
         {
           model: Art,
           as: 'arts',
+        },
+        {
+          model: Follow,
+          as: 'following',
+          attributes: ['following'],
+          include: {
+            model: User,
+            as: 'followedUser',
+            attributes: ['id', 'name'],
+          },
+        },
+        {
+          model: Follow,
+          as: 'followed',
+          attributes: ['followed'],
+          include: {
+            model: User,
+            as: 'followingUser',
+            attributes: ['id', 'name'],
+          },
         },
       ],
     });

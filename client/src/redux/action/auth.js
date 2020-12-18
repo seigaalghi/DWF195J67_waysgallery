@@ -13,6 +13,8 @@ import {
   EDIT_PROFILE,
   ADD_ART,
   APPROVEMENT,
+  FOLLOW,
+  UNFOLLOW,
 } from '../types';
 import { setAlert } from './alert';
 import setAuth from '../utility/setAuthToken';
@@ -312,6 +314,48 @@ export const approvement = (id) => async (dispatch) => {
     dispatch({
       type: APPROVEMENT,
       payload: { hire: res.data.data.hire, id },
+    });
+    dispatch(setAlert(res.data.message, 'success'));
+  } catch (error) {
+    if (error.response) {
+      if (error.response.data.message) {
+        dispatch(setAlert(error.response.data.message, 'danger'));
+      }
+    }
+  }
+};
+
+// =====================================================================
+// Follow
+// =====================================================================
+
+export const follow = (id) => async (dispatch) => {
+  try {
+    const res = await axios.post(`/api/v1/user/follow/${id}`);
+    dispatch({
+      type: FOLLOW,
+      payload: res.data.data.follow,
+    });
+    dispatch(setAlert(res.data.message, 'success'));
+  } catch (error) {
+    if (error.response) {
+      if (error.response.data.message) {
+        dispatch(setAlert(error.response.data.message, 'danger'));
+      }
+    }
+  }
+};
+
+// =====================================================================
+// Unfollow
+// =====================================================================
+
+export const unfollow = (id) => async (dispatch) => {
+  try {
+    const res = await axios.delete(`/api/v1/user/follow/${id}`);
+    dispatch({
+      type: UNFOLLOW,
+      payload: id,
     });
     dispatch(setAlert(res.data.message, 'success'));
   } catch (error) {

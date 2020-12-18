@@ -1,4 +1,4 @@
-const { Post, Hire, User, Photo, Art, Project, ProjectImage } = require('../../models');
+const { Post, Hire, User, Photo, Art, Project, ProjectImage, PostLike, PostComment, Follow } = require('../../models');
 const Joi = require('joi');
 
 // =================================================================================
@@ -53,10 +53,32 @@ exports.putUser = async (req, res) => {
         {
           model: Post,
           as: 'posts',
-          include: {
-            model: Photo,
-            as: 'photos',
-          },
+          include: [
+            {
+              model: Photo,
+              as: 'photos',
+            },
+            {
+              model: PostLike,
+              as: 'likes',
+              attributes: { exclude: ['updatedAt'] },
+              include: {
+                model: User,
+                as: 'user',
+                attributes: ['id', 'name'],
+              },
+            },
+            {
+              model: PostComment,
+              as: 'comments',
+              attributes: { exclude: ['updatedAt'] },
+              include: {
+                model: User,
+                as: 'user',
+                attributes: ['id', 'name'],
+              },
+            },
+          ],
         },
         {
           model: Hire,
@@ -145,10 +167,32 @@ exports.getUsers = async (req, res) => {
         {
           model: Post,
           as: 'posts',
-          include: {
-            model: Photo,
-            as: 'photos',
-          },
+          include: [
+            {
+              model: Photo,
+              as: 'photos',
+            },
+            {
+              model: PostLike,
+              as: 'likes',
+              attributes: { exclude: ['updatedAt'] },
+              include: {
+                model: User,
+                as: 'user',
+                attributes: ['id', 'name'],
+              },
+            },
+            {
+              model: PostComment,
+              as: 'comments',
+              attributes: { exclude: ['updatedAt'] },
+              include: {
+                model: User,
+                as: 'user',
+                attributes: ['id', 'name'],
+              },
+            },
+          ],
         },
         {
           model: Hire,
@@ -161,6 +205,26 @@ exports.getUsers = async (req, res) => {
         {
           model: Art,
           as: 'arts',
+        },
+        {
+          model: Follow,
+          as: 'following',
+          attributes: ['following'],
+          include: {
+            model: User,
+            as: 'followedUser',
+            attributes: ['id', 'name'],
+          },
+        },
+        {
+          model: Follow,
+          as: 'followed',
+          attributes: ['followed'],
+          include: {
+            model: User,
+            as: 'followingUser',
+            attributes: ['id', 'name'],
+          },
         },
       ],
     });
@@ -213,6 +277,29 @@ exports.loadUserById = async (req, res) => {
             {
               model: User,
               as: 'user',
+              attributes: {
+                exclude: ['password', 'createdAt', 'updatedAt'],
+              },
+            },
+            {
+              model: PostLike,
+              as: 'likes',
+              attributes: { exclude: ['updatedAt'] },
+              include: {
+                model: User,
+                as: 'user',
+                attributes: ['id', 'name'],
+              },
+            },
+            {
+              model: PostComment,
+              as: 'comments',
+              attributes: { exclude: ['updatedAt'] },
+              include: {
+                model: User,
+                as: 'user',
+                attributes: ['id', 'name'],
+              },
             },
           ],
         },
@@ -227,6 +314,26 @@ exports.loadUserById = async (req, res) => {
         {
           model: Art,
           as: 'arts',
+        },
+        {
+          model: Follow,
+          as: 'following',
+          attributes: ['following'],
+          include: {
+            model: User,
+            as: 'followedUser',
+            attributes: ['id', 'name'],
+          },
+        },
+        {
+          model: Follow,
+          as: 'followed',
+          attributes: ['followed'],
+          include: {
+            model: User,
+            as: 'followingUser',
+            attributes: ['id', 'name'],
+          },
         },
       ],
     });
@@ -280,6 +387,113 @@ exports.uploadArt = async (req, res) => {
       data: {
         art,
       },
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      status: 'error',
+      error: {
+        message: 'Internal Server Error',
+      },
+    });
+  }
+};
+
+// =================================================================================
+// Follow
+// =================================================================================
+
+exports.followUser = async (req, res) => {
+  const followed = req.params.id;
+  const following = req.user.id;
+  try {
+    if (followed == following) {
+      return res.status(400).json({
+        status: 'failed',
+        message: "You can't follow yourself",
+      });
+    }
+    const checking = await Follow.findOne({
+      where: {
+        followed,
+        following,
+      },
+    });
+
+    if (checking) {
+      res.status(400).json({
+        status: 'failed',
+        message: 'Already followed',
+      });
+    }
+
+    await Follow.create({
+      followed,
+      following,
+    });
+
+    const response = await Follow.findOne({
+      where: {
+        followed,
+        following,
+      },
+      include: [
+        {
+          model: User,
+          as: 'followingUser',
+          attributes: ['id', 'name'],
+        },
+        {
+          model: User,
+          as: 'followedUser',
+          attributes: ['id', 'name'],
+        },
+      ],
+    });
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Followed successfully',
+      data: {
+        follow: response,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      status: 'error',
+      error: {
+        message: 'Internal Server Error',
+      },
+    });
+  }
+};
+
+// =================================================================================
+// Unfollow
+// =================================================================================
+
+exports.unfollowUser = async (req, res) => {
+  const followed = req.params.id;
+  const following = req.user.id;
+  try {
+    const follow = await Follow.destroy({
+      where: {
+        followed,
+        following,
+      },
+    });
+
+    if (!follow) {
+      res.status(400).json({
+        status: 'failed',
+        message: 'Failed to unfollow',
+      });
+    }
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Unfollowed successfully',
     });
   } catch (error) {
     console.log(error);

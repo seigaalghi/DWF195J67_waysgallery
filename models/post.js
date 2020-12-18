@@ -11,6 +11,8 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Post.hasMany(models.Photo, { as: 'photos', foreignKey: 'postId' });
       Post.belongsTo(models.User, { as: 'user', foreignKey: 'userId' });
+      Post.hasMany(models.PostComment, { as: 'comments', foreignKey: 'postId' });
+      Post.hasMany(models.PostLike, { as: 'likes', foreignKey: 'postId' });
     }
   }
   Post.init(

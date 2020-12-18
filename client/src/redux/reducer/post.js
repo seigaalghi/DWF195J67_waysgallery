@@ -1,4 +1,4 @@
-import { LOAD_POSTS, LOAD_POST, ADD_POST } from '../types';
+import { LOAD_POSTS, LOAD_POST, ADD_POST, LIKE_POST, DISLIKE_POST } from '../types';
 
 const initialState = {
   post: null,
@@ -25,6 +25,21 @@ const postReducer = (state = initialState, action) => {
       return {
         ...state,
         posts: [...state.posts, payload],
+        loading: false,
+      };
+    case LIKE_POST:
+      console.log(payload);
+      return {
+        ...state,
+        posts: state.posts.map((post) => (post.id === payload.id ? { ...post, likes: [...post.likes, payload.like] } : post)),
+        loading: false,
+      };
+    case DISLIKE_POST:
+      return {
+        ...state,
+        posts: state.posts.map((post) =>
+          post.id === payload.id ? { ...post, likes: post.likes.filter((like) => like.user.id !== payload.userId) } : post
+        ),
         loading: false,
       };
     default:

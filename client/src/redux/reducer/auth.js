@@ -12,6 +12,8 @@ import {
   EDIT_PROFILE,
   ADD_ART,
   APPROVEMENT,
+  FOLLOW,
+  UNFOLLOW,
 } from '../types';
 
 const initialState = {
@@ -100,6 +102,17 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         user: { ...state.user, offers: state.user.offers.map((offer) => (offer.id === payload.id ? payload.hire : offer)) },
+      };
+    case FOLLOW:
+      return {
+        ...state,
+        user: { ...state.user, following: [...state.user.following, payload] },
+      };
+    case UNFOLLOW:
+      console.log(payload);
+      return {
+        ...state,
+        user: { ...state.user, following: state.user.following.filter((follow) => follow.followedUser.id !== parseInt(payload)) },
       };
 
     default:

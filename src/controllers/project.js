@@ -8,7 +8,6 @@ const Joi = require('joi');
 exports.addProject = async (req, res) => {
   const body = req.body;
   const file = req.files;
-  console.log(req.params);
   try {
     const project = await Project.create({
       userId: req.user.id,
