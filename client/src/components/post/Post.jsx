@@ -25,12 +25,14 @@ const Post = ({ post: { loading, post }, loadPost, auth, follow, unfollow, addCo
   }, [loadPost]);
 
   useEffect(() => {
-    if (post && !loading) {
-      setBig(post.photos[0].photo);
+    if (post) {
+      if (post.photos && !loading) {
+        setBig(post.photos[0].photo);
+      }
     }
   }, [post]);
 
-  return loading || !post.photos || auth.loading || !auth.user || !auth.user ? (
+  return loading || !post || auth.loading || !auth.user ? (
     <Loading />
   ) : (
     <div className='post-container'>
