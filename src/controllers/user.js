@@ -132,6 +132,30 @@ exports.putUser = async (req, res) => {
           model: Art,
           as: 'arts',
         },
+        {
+          model: Follow,
+          as: 'following',
+          attributes: ['following'],
+          include: {
+            model: User,
+            as: 'followedUser',
+            attributes: ['id', 'name'],
+          },
+        },
+        {
+          model: Follow,
+          as: 'followed',
+          attributes: ['followed'],
+          include: {
+            model: User,
+            as: 'followingUser',
+            attributes: ['id', 'name'],
+          },
+        },
+      ],
+      order: [
+        ['createdAt', 'DESC'],
+        [{ model: Art, as: 'arts' }, 'createdAt', 'DESC'],
       ],
     });
 

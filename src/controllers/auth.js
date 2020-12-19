@@ -260,6 +260,10 @@ exports.loadUser = async (req, res) => {
           },
         },
       ],
+      order: [
+        ['createdAt', 'DESC'],
+        [{ model: Art, as: 'arts' }, 'createdAt', 'DESC'],
+      ],
     });
 
     if (!user) {
