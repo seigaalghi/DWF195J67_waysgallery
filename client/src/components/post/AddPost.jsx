@@ -14,8 +14,8 @@ const AddPost = ({ addPost }) => {
     description: '',
   };
   const onSubmit = (values) => {
-    console.log(values);
     addPost(values);
+    history.push('/');
   };
 
   const history = useHistory();

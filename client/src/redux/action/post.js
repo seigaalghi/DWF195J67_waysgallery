@@ -1,6 +1,6 @@
 import { LOAD_POSTS, LOAD_POST, ADD_POST, LIKE_POST, DISLIKE_POST, COMMENT_POST, DELETE_COMMENT } from '../types';
 import axios from 'axios';
-import { setAlert } from './alert';
+import { setAlert, setUpload } from './alert';
 
 export const loadPost = (id) => async (dispatch) => {
   try {
@@ -21,6 +21,28 @@ export const loadPost = (id) => async (dispatch) => {
 export const loadPosts = (limit) => async (dispatch) => {
   try {
     const res = await axios.get(`/api/v1/posts/${limit}`);
+    dispatch({
+      type: LOAD_POSTS,
+      payload: { posts: res.data.data.posts.rows, count: res.data.data.posts.count },
+    });
+  } catch (error) {
+    if (error.response) {
+      if (error.response.data.message) {
+        dispatch(setAlert(error.response.data.message, 'danger'));
+      }
+    }
+  }
+};
+
+export const loadFollowedPosts = (limit, data) => async (dispatch) => {
+  const body = JSON.stringify(data);
+  const config = {
+    headers: {
+      'Content-type': 'application/json',
+    },
+  };
+  try {
+    const res = await axios.post(`/api/v1/posts/${limit}`, body, config);
     dispatch({
       type: LOAD_POSTS,
       payload: { posts: res.data.data.posts.rows, count: res.data.data.posts.count },
@@ -64,6 +86,10 @@ export const addPost = (data) => async (dispatch) => {
   const config = {
     headers: {
       'Content-type': 'multipart/form-data',
+    },
+    onUploadProgress: (progressEvent) => {
+      const percentage = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+      dispatch(setUpload(percentage));
     },
   };
   try {

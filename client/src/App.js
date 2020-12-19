@@ -17,6 +17,7 @@ import SendProject from './components/Project/SendProject';
 import ViewProject from './components/Project/ViewProject';
 import AddHire from './components/hire/AddHire';
 import EditProfile from './components/profile/EditProfile';
+import Upload from './components/Upload';
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -30,6 +31,7 @@ function App() {
     <Provider store={store}>
       <div className='App-container'>
         <PopUp />
+        <Upload />
         <Router>
           <Switch>
             <Route path='/landing' exact component={Background} />

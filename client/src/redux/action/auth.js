@@ -16,7 +16,7 @@ import {
   FOLLOW,
   UNFOLLOW,
 } from '../types';
-import { setAlert } from './alert';
+import { setAlert, setUpload } from './alert';
 import setAuth from '../utility/setAuthToken';
 
 // =====================================================================
@@ -198,6 +198,10 @@ export const sendProject = (id, data) => async (dispatch) => {
     headers: {
       'Content-type': 'multipart/form-data',
     },
+    onUploadProgress: (progressEvent) => {
+      const percentage = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+      dispatch(setUpload(percentage));
+    },
   };
   try {
     const res = await axios.post(`/api/v1/project/${id}`, formData, config);
@@ -286,6 +290,10 @@ export const addArt = (data) => async (dispatch) => {
   const config = {
     headers: {
       'Content-type': 'multipart/form-data',
+    },
+    onUploadProgress: (progressEvent) => {
+      const percentage = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+      dispatch(setUpload(percentage));
     },
   };
   try {

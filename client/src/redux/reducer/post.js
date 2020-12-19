@@ -26,7 +26,7 @@ const postReducer = (state = initialState, action) => {
     case ADD_POST:
       return {
         ...state,
-        posts: [...state.posts, payload],
+        posts: [payload, ...state.posts],
         loading: false,
       };
     case LIKE_POST:

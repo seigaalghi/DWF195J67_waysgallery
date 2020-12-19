@@ -32,7 +32,7 @@ router.get('/auth', auth, loadUser);
 // ==================================================================
 router.get('/posts/:limit/', getPosts);
 router.get('/posts/:limit/:userId', getPostsByUser);
-router.get('/followingpost/:limit', getPostsByFollowing);
+router.post('/posts/:limit', auth, getPostsByFollowing);
 router.get('/post/:id', getPost);
 router.post('/post/', fileUpload('photos', null), auth, addPost);
 router.post('/post/like/:id', auth, addLike);

@@ -36,6 +36,7 @@ const AddPost = ({ auth: { loading, user }, editProfile, addArt }) => {
   const onSubmit = (e) => {
     e.preventDefault();
     editProfile(formData);
+    history.goBack();
   };
 
   return (

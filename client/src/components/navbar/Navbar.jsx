@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import logo from '../../images/logo.svg';
 import { userLogout } from '../../redux/action/auth';
-import Loading from '../Loading';
 import Dropdown from './Dropdown';
 
 const Navbar = ({ userLogout, auth: { loading, user } }) => {
@@ -13,7 +12,6 @@ const Navbar = ({ userLogout, auth: { loading, user } }) => {
     const closeHandler = (e) => {
       if (wrapperRef.current) {
         if (!wrapperRef.current.contains(e.target)) {
-          console.log(wrapperRef.current);
           setOpen(false);
         }
       }

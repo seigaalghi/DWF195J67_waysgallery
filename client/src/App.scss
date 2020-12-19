@@ -543,6 +543,7 @@ small {
   grid-template-areas:
     'greeting art art'
     'action art art'
+    'arts arts arts'
     'project project project';
   grid-template-columns: 33.3% 33.3% 33.3%;
   grid-template-rows: 300px 200px auto;
@@ -581,6 +582,20 @@ small {
       height: 40px;
     }
   }
+  .arts-container {
+    grid-area: arts;
+    .arts {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 30px;
+      img {
+        width: 100%;
+        margin: 10px;
+        border-radius: 10px;
+      }
+    }
+  }
+
   .project {
     grid-area: project;
     display: grid;
@@ -1261,6 +1276,33 @@ small {
       .btn {
         margin-left: 10px;
       }
+    }
+  }
+}
+
+.upload-container {
+  z-index: 2;
+  display: flex;
+  position: fixed;
+  background-color: #ffffffcc;
+  top: 0px;
+  right: 0px;
+  left: 0px;
+  bottom: 0px;
+  align-items: center;
+  justify-content: center;
+  .upload {
+    text-align: center;
+    width: 40%;
+    background-color: white;
+    border-radius: 10px;
+    padding: 30px;
+    border: 2px solid $primary;
+    .progress {
+      background-color: $success;
+      height: 40px;
+      border-radius: 20px;
+      margin: 20px 0px;
     }
   }
 }

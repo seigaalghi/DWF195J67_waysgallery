@@ -15,14 +15,14 @@ const Profile = ({ loadProfileById, profile: { loading, profile }, post, auth, f
     count: 3,
   });
 
-  console.log(page);
-
   useEffect(() => {
     loadPostByUser(page.page * page.count, id);
   }, [page, loadPostByUser]);
+
   useEffect(() => {
     loadProfileById(id);
   }, [loadProfileById, id]);
+
   return loading || auth.loading ? (
     <Loading />
   ) : (
@@ -60,8 +60,16 @@ const Profile = ({ loadProfileById, profile: { loading, profile }, post, auth, f
           <img src={profile.arts[profile.arts.length - 1].art} alt='art' />{' '}
         </div>
       ) : null}
+      <div className='arts-container'>
+        <h2>{auth.user.id === parseInt(id) ? 'My Arts' : `${profile.name}'s Arts`}</h2>
+        <div className='arts'>
+          {profile.arts.map((art) => (
+            <img src={art.art} alt='art' key={art.id} />
+          ))}
+        </div>
+      </div>
       <div className='project'>
-        <h2>{auth.user.id === id ? 'My Works' : `${profile.name}'s Works`}</h2>
+        <h2>{auth.user.id === parseInt(id) ? 'My Posts' : `${profile.name}'s Posts`}</h2>
         {!post.loading ? (
           <Contents contents={post.posts} count={post.count} loadMore={() => setPage((prev) => ({ ...prev, page: prev.page + 1 }))} />
         ) : null}
