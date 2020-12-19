@@ -15,6 +15,7 @@ import {
   APPROVEMENT,
   FOLLOW,
   UNFOLLOW,
+  CHANGE_PROFILE,
 } from '../types';
 import { setAlert, setUpload } from './alert';
 import setAuth from '../utility/setAuthToken';
@@ -268,6 +269,10 @@ export const editProfile = (data) => async (dispatch) => {
     const res = await axios.put(`/api/v1/user/profile`, formData, config);
     dispatch({
       type: EDIT_PROFILE,
+      payload: res.data.data.user,
+    });
+    dispatch({
+      type: CHANGE_PROFILE,
       payload: res.data.data.user,
     });
     dispatch(setAlert(res.data.message, 'success'));

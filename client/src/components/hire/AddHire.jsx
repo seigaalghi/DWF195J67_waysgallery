@@ -26,6 +26,7 @@ const AddPost = ({ addHiring, loadProfileById, profile: { profile, loading }, au
   const onSubmit = (values) => {
     console.log(values);
     addHiring(id, values);
+    history.push('/order');
   };
 
   const validationSchema = Yup.object({

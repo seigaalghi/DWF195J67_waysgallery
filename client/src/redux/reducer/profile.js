@@ -1,4 +1,4 @@
-import { LOAD_PROFILE } from '../types';
+import { CHANGE_PROFILE, EDIT_PROFILE, LOAD_PROFILE } from '../types';
 
 const initialState = {
   profile: null,
@@ -10,6 +10,12 @@ const profileReducer = (state = initialState, action) => {
   const { type, payload } = action;
   switch (type) {
     case LOAD_PROFILE:
+      return {
+        ...state,
+        profile: payload,
+        loading: false,
+      };
+    case CHANGE_PROFILE:
       return {
         ...state,
         profile: payload,

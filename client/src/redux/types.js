@@ -17,6 +17,7 @@ export const REJECT_HIRE = 'REJECT_HIRE';
 export const SEND_PROJECT = 'SEND_PROJECT';
 export const ADD_HIRING = 'ADD_HIRING';
 export const EDIT_PROFILE = 'EDIT_PROFILE';
+export const CHANGE_PROFILE = 'CHANGE_PROFILE';
 export const ADD_ART = 'ADD_ART';
 export const APPROVEMENT = 'APPROVEMENT';
 export const FOLLOW = 'FOLLOW';

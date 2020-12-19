@@ -17,6 +17,7 @@ const Post = ({ post: { loading, post }, loadPost, auth, follow, unfollow, addCo
   const onSubmit = (e) => {
     e.preventDefault();
     addComment(comment, post.id);
+    setComment({ comment: '' });
   };
 
   useEffect(() => {
@@ -29,7 +30,7 @@ const Post = ({ post: { loading, post }, loadPost, auth, follow, unfollow, addCo
     }
   }, [post]);
 
-  return loading || !post || auth.loading ? (
+  return loading || !post.photos || auth.loading || !auth.user || !auth.user ? (
     <Loading />
   ) : (
     <div className='post-container'>
