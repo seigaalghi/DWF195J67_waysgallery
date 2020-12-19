@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import Navbar from '../navbar/Navbar';
 import { connect } from 'react-redux';
 import { loadProfileById } from '../../redux/action/profile';
@@ -6,9 +6,20 @@ import { Link, useParams } from 'react-router-dom';
 import Loading from '../Loading';
 import Contents from '../home/Contents';
 import { follow, unfollow } from '../../redux/action/auth';
+import { loadPostByUser } from '../../redux/action/post';
 
-const Profile = ({ loadProfileById, profile: { loading, profile }, auth, follow, unfollow }) => {
+const Profile = ({ loadProfileById, profile: { loading, profile }, post, auth, follow, unfollow, loadPostByUser }) => {
   const { id } = useParams();
+  const [page, setPage] = useState({
+    page: 1,
+    count: 3,
+  });
+
+  console.log(page);
+
+  useEffect(() => {
+    loadPostByUser(page.page * page.count, id);
+  }, [page, loadPostByUser]);
   useEffect(() => {
     loadProfileById(id);
   }, [loadProfileById, id]);
@@ -51,7 +62,9 @@ const Profile = ({ loadProfileById, profile: { loading, profile }, auth, follow,
       ) : null}
       <div className='project'>
         <h2>{auth.user.id === id ? 'My Works' : `${profile.name}'s Works`}</h2>
-        <Contents contents={profile.posts} />
+        {!post.loading ? (
+          <Contents contents={post.posts} count={post.count} loadMore={() => setPage((prev) => ({ ...prev, page: prev.page + 1 }))} />
+        ) : null}
       </div>
     </div>
   );
@@ -60,6 +73,7 @@ const Profile = ({ loadProfileById, profile: { loading, profile }, auth, follow,
 const mapStateToProps = (state) => ({
   auth: state.auth,
   profile: state.profile,
+  post: state.post,
 });
 
-export default connect(mapStateToProps, { loadProfileById, follow, unfollow })(Profile);
+export default connect(mapStateToProps, { loadProfileById, follow, unfollow, loadPostByUser })(Profile);

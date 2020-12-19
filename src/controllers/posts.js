@@ -6,9 +6,13 @@ const Joi = require('joi');
 // =================================================================================
 
 exports.getPosts = async (req, res) => {
+  const { limit } = req.params;
   try {
-    const posts = await Post.findAll({
-      attributes: { exclude: ['createdAt', 'updatedAt'] },
+    const posts = await Post.findAndCountAll({
+      limit: parseInt(limit),
+      attributes: { exclude: ['updatedAt'] },
+      where: {},
+      distinct: true,
       include: [
         {
           model: Photo,
@@ -18,7 +22,7 @@ exports.getPosts = async (req, res) => {
         {
           model: User,
           as: 'user',
-          attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
+          attributes: { exclude: ['updatedAt', 'password'] },
         },
         {
           model: PostLike,
@@ -69,7 +73,7 @@ exports.getPost = async (req, res) => {
   try {
     const post = await Post.findOne({
       where: { id },
-      attributes: { exclude: ['createdAt', 'updatedAt'] },
+      attributes: { exclude: ['updatedAt'] },
       include: [
         {
           model: Photo,
@@ -78,7 +82,7 @@ exports.getPost = async (req, res) => {
         {
           model: User,
           as: 'user',
-          attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
+          attributes: { exclude: ['updatedAt', 'password'] },
         },
         {
           model: PostLike,
@@ -100,6 +104,10 @@ exports.getPost = async (req, res) => {
             attributes: ['id', 'name', 'avatar'],
           },
         },
+      ],
+      order: [
+        ['createdAt', 'DESC'],
+        [{ model: PostComment, as: 'comments' }, 'createdAt', 'DESC'],
       ],
     });
 
@@ -179,7 +187,7 @@ exports.addPost = async (req, res) => {
     photo().then(async () => {
       const response = await Post.findOne({
         where: { id: post.id },
-        attributes: { exclude: ['createdAt', 'updatedAt'] },
+        attributes: { exclude: ['updatedAt'] },
         include: [
           {
             model: Photo,
@@ -189,7 +197,7 @@ exports.addPost = async (req, res) => {
           {
             model: User,
             as: 'user',
-            attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
+            attributes: { exclude: ['updatedAt', 'password'] },
           },
           {
             model: PostLike,
@@ -399,6 +407,138 @@ exports.removeComment = async (req, res) => {
     res.status(200).json({
       status: 'success',
       message: 'Deleted successfully',
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      status: 'error',
+      error: {
+        message: 'Internal Server Error',
+      },
+    });
+  }
+};
+
+// =================================================================================
+// GET POST By User
+// =================================================================================
+
+exports.getPostsByUser = async (req, res) => {
+  const { limit } = req.params;
+  const { userId } = req.params;
+  try {
+    const posts = await Post.findAndCountAll({
+      limit: parseInt(limit),
+      attributes: { exclude: ['updatedAt'] },
+      where: {
+        userId,
+      },
+      distinct: true,
+      include: [
+        {
+          model: Photo,
+          as: 'photos',
+          attributes: ['id', 'photo'],
+        },
+        {
+          model: User,
+          as: 'user',
+          attributes: { exclude: ['updatedAt', 'password'] },
+        },
+        {
+          model: PostLike,
+          as: 'likes',
+          attributes: ['id'],
+          include: {
+            model: User,
+            as: 'user',
+            attributes: ['id', 'name'],
+          },
+        },
+        {
+          model: PostComment,
+          as: 'comments',
+          attributes: { exclude: ['updatedAt'] },
+          include: {
+            model: User,
+            as: 'user',
+            attributes: ['id', 'name'],
+          },
+        },
+      ],
+    });
+    res.status(200).json({
+      status: 'success',
+      message: 'Posts loaded successfully',
+      data: {
+        posts,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      status: 'error',
+      error: {
+        message: 'Internal Server Error',
+      },
+    });
+  }
+};
+
+// =================================================================================
+// GET POSTS BY FOLLOWING
+// =================================================================================
+
+exports.getPostsByFollowing = async (req, res) => {
+  const { limit } = req.params;
+  const { userId } = req.body;
+  try {
+    const posts = await Post.findAndCountAll({
+      limit: parseInt(limit),
+      attributes: { exclude: ['updatedAt'] },
+      where: {
+        userId,
+      },
+      distinct: true,
+      include: [
+        {
+          model: Photo,
+          as: 'photos',
+          attributes: ['id', 'photo'],
+        },
+        {
+          model: User,
+          as: 'user',
+          attributes: { exclude: ['updatedAt', 'password'] },
+        },
+        {
+          model: PostLike,
+          as: 'likes',
+          attributes: ['id'],
+          include: {
+            model: User,
+            as: 'user',
+            attributes: ['id', 'name'],
+          },
+        },
+        {
+          model: PostComment,
+          as: 'comments',
+          attributes: { exclude: ['updatedAt'] },
+          include: {
+            model: User,
+            as: 'user',
+            attributes: ['id', 'name'],
+          },
+        },
+      ],
+    });
+    res.status(200).json({
+      status: 'success',
+      message: 'Posts loaded successfully',
+      data: {
+        posts,
+      },
     });
   } catch (error) {
     console.log(error);

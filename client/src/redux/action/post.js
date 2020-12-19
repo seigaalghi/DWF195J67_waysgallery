@@ -18,12 +18,28 @@ export const loadPost = (id) => async (dispatch) => {
   }
 };
 
-export const loadPosts = () => async (dispatch) => {
+export const loadPosts = (limit) => async (dispatch) => {
   try {
-    const res = await axios.get(`/api/v1/posts`);
+    const res = await axios.get(`/api/v1/posts/${limit}`);
     dispatch({
       type: LOAD_POSTS,
-      payload: res.data.data.posts,
+      payload: { posts: res.data.data.posts.rows, count: res.data.data.posts.count },
+    });
+  } catch (error) {
+    if (error.response) {
+      if (error.response.data.message) {
+        dispatch(setAlert(error.response.data.message, 'danger'));
+      }
+    }
+  }
+};
+
+export const loadPostByUser = (limit, userId) => async (dispatch) => {
+  try {
+    const res = await axios.get(`/api/v1/posts/${limit}/${userId}`);
+    dispatch({
+      type: LOAD_POSTS,
+      payload: { posts: res.data.data.posts.rows, count: res.data.data.posts.count },
     });
   } catch (error) {
     if (error.response) {

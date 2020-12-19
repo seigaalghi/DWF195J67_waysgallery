@@ -26,6 +26,9 @@ module.exports = (sequelize, DataTypes) => {
       status: DataTypes.STRING,
     },
     {
+      defaultScope: {
+        order: [['createdAt', 'DESC']],
+      },
       sequelize,
       modelName: 'Hire',
     }

@@ -56,12 +56,12 @@ exports.addProject = async (req, res) => {
           {
             model: User,
             as: 'offeredTo',
-            attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
+            attributes: { exclude: ['updatedAt', 'password'] },
           },
           {
             model: User,
             as: 'orderedBy',
-            attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
+            attributes: { exclude: ['updatedAt', 'password'] },
           },
         ],
       });

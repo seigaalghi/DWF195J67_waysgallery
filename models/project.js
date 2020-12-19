@@ -21,6 +21,9 @@ module.exports = (sequelize, DataTypes) => {
       description: DataTypes.TEXT,
     },
     {
+      defaultScope: {
+        order: [['createdAt', 'DESC']],
+      },
       sequelize,
       modelName: 'Project',
     }

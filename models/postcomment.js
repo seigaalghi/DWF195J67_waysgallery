@@ -20,6 +20,9 @@ module.exports = (sequelize, DataTypes) => {
       comment: DataTypes.STRING,
     },
     {
+      defaultScope: {
+        order: [['createdAt', 'DESC']],
+      },
       sequelize,
       modelName: 'PostComment',
     }

@@ -6,24 +6,21 @@ import Contents from './Contents';
 import { Link } from 'react-router-dom';
 import Loading from '../Loading';
 
-const Home = ({ post: { posts, loading }, loadPosts }) => {
-  const [time, setTime] = useState('today');
+const Home = ({ post: { posts, loading, count }, loadPosts }) => {
+  const [page, setPage] = useState({
+    page: 1,
+    times: 6,
+  });
   useEffect(() => {
-    loadPosts();
-  }, [loadPosts]);
+    loadPosts(page.page * page.times);
+  }, [loadPosts, page]);
 
   return loading || !posts ? (
     <Loading />
   ) : (
     <div className='home-container'>
       <Navbar />
-      <div className='select'>
-        <select name='page' onChange={(e) => setTime(e.target.value)}>
-          <option value='today'>Today</option>
-          <option value='all'>All Time</option>
-        </select>
-      </div>
-      <Contents contents={posts} />
+      <Contents contents={posts} count={count} loadMore={() => setPage({ ...page, page: page.page + 1 })} />
     </div>
   );
 };

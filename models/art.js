@@ -18,6 +18,9 @@ module.exports = (sequelize, DataTypes) => {
       userId: DataTypes.INTEGER,
     },
     {
+      defaultScope: {
+        order: [['createdAt', 'DESC']],
+      },
       sequelize,
       modelName: 'Art',
     }

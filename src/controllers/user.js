@@ -14,7 +14,7 @@ exports.putUser = async (req, res) => {
     const old = await User.findOne({
       where: { id },
       attributes: {
-        exclude: ['createdAt', 'updatedAt', 'password'],
+        exclude: ['updatedAt', 'password'],
       },
     });
 
@@ -47,7 +47,7 @@ exports.putUser = async (req, res) => {
     const response = await User.findOne({
       where: { id },
       attributes: {
-        exclude: ['createdAt', 'updatedAt', 'password'],
+        exclude: ['updatedAt', 'password'],
       },
       include: [
         {
@@ -95,12 +95,12 @@ exports.putUser = async (req, res) => {
             {
               model: User,
               as: 'offeredTo',
-              attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
+              attributes: { exclude: ['updatedAt', 'password'] },
             },
             {
               model: User,
               as: 'orderedBy',
-              attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
+              attributes: { exclude: ['updatedAt', 'password'] },
             },
           ],
         },
@@ -119,12 +119,12 @@ exports.putUser = async (req, res) => {
             {
               model: User,
               as: 'offeredTo',
-              attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
+              attributes: { exclude: ['updatedAt', 'password'] },
             },
             {
               model: User,
               as: 'orderedBy',
-              attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
+              attributes: { exclude: ['updatedAt', 'password'] },
             },
           ],
         },
@@ -161,7 +161,7 @@ exports.getUsers = async (req, res) => {
   try {
     const users = await User.findAll({
       attributes: {
-        exclude: ['createdAt', 'updatedAt', 'password'],
+        exclude: ['updatedAt', 'password'],
       },
       include: [
         {
@@ -263,7 +263,7 @@ exports.loadUserById = async (req, res) => {
     const user = await User.findOne({
       where: { id },
       attributes: {
-        exclude: ['createdAt', 'updatedAt', 'password'],
+        exclude: ['updatedAt', 'password'],
       },
       include: [
         {
@@ -278,7 +278,7 @@ exports.loadUserById = async (req, res) => {
               model: User,
               as: 'user',
               attributes: {
-                exclude: ['password', 'createdAt', 'updatedAt'],
+                exclude: ['password', 'updatedAt'],
               },
             },
             {

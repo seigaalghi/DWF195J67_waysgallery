@@ -3,11 +3,17 @@ import Icon from '../iconcomp/Icon';
 import { Link } from 'react-router-dom';
 import { dislikePost, likePost } from '../../redux/action/post';
 import { connect } from 'react-redux';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
-const Contents = ({ contents, likePost, dislikePost, auth: { loading, user } }) => {
+const Contents = ({ contents, count, loadMore, likePost, dislikePost, auth: { loading, user } }) => {
   return (
     <div>
-      <div className='contents'>
+      <InfiniteScroll
+        className='contents'
+        dataLength={contents.length}
+        next={() => setTimeout(() => loadMore(), 1500)}
+        hasMore={contents.length < count}
+        loader={<h3 className='load-more'>Loading...</h3>}>
         {contents.map((post) => (
           <div className='content' key={post.id}>
             <Link className='image' style={{ backgroundImage: 'url("' + post.photos[0].photo + '")' }} to={`/post/${post.id}`}>
@@ -29,7 +35,6 @@ const Contents = ({ contents, likePost, dislikePost, auth: { loading, user } }) 
                 </div>
                 {!loading ? (
                   post.likes.find((like) => {
-                    console.log(like);
                     return like.user.id == user.id;
                   }) ? (
                     <div onClick={() => dislikePost(post.id, user.id)}>
@@ -47,7 +52,7 @@ const Contents = ({ contents, likePost, dislikePost, auth: { loading, user } }) 
             </div>
           </div>
         ))}
-      </div>
+      </InfiniteScroll>
     </div>
   );
 };

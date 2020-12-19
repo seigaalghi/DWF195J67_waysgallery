@@ -29,6 +29,9 @@ module.exports = (sequelize, DataTypes) => {
       avatar: DataTypes.STRING,
     },
     {
+      defaultScope: {
+        order: [['createdAt', 'DESC']],
+      },
       sequelize,
       modelName: 'User',
     }

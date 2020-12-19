@@ -3,6 +3,7 @@ import { LOAD_POSTS, LOAD_POST, ADD_POST, LIKE_POST, DISLIKE_POST, COMMENT_POST,
 const initialState = {
   post: null,
   posts: null,
+  count: null,
   loading: true,
 };
 
@@ -18,7 +19,8 @@ const postReducer = (state = initialState, action) => {
     case LOAD_POSTS:
       return {
         ...state,
-        posts: payload,
+        posts: payload.posts,
+        count: payload.count,
         loading: false,
       };
     case ADD_POST:

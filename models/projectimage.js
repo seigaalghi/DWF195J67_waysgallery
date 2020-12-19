@@ -18,6 +18,9 @@ module.exports = (sequelize, DataTypes) => {
       image: DataTypes.STRING,
     },
     {
+      defaultScope: {
+        order: [['createdAt', 'DESC']],
+      },
       sequelize,
       modelName: 'ProjectImage',
     }

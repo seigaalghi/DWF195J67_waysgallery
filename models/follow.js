@@ -19,6 +19,9 @@ module.exports = (sequelize, DataTypes) => {
       following: DataTypes.INTEGER,
     },
     {
+      defaultScope: {
+        order: [['createdAt', 'DESC']],
+      },
       sequelize,
       modelName: 'Follow',
     }

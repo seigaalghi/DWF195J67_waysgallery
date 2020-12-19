@@ -2,7 +2,17 @@ const express = require('express');
 const router = express.Router();
 
 const { register, login, loadUser } = require('../controllers/auth');
-const { getPosts, getPost, addPost, addLike, removeLike, addComment, removeComment } = require('../controllers/posts');
+const {
+  getPosts,
+  getPost,
+  addPost,
+  addLike,
+  removeLike,
+  addComment,
+  removeComment,
+  getPostsByUser,
+  getPostsByFollowing,
+} = require('../controllers/posts');
 const { putUser, getUsers, loadUserById, uploadArt, followUser, unfollowUser } = require('../controllers/user');
 const { addProject } = require('../controllers/project');
 const { auth } = require('../middlewares/auth');
@@ -20,7 +30,9 @@ router.get('/auth', auth, loadUser);
 // ==================================================================
 // Posts
 // ==================================================================
-router.get('/posts', getPosts);
+router.get('/posts/:limit/', getPosts);
+router.get('/posts/:limit/:userId', getPostsByUser);
+router.get('/followingpost/:limit', getPostsByFollowing);
 router.get('/post/:id', getPost);
 router.post('/post/', fileUpload('photos', null), auth, addPost);
 router.post('/post/like/:id', auth, addLike);

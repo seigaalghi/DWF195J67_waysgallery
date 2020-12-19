@@ -154,7 +154,7 @@ exports.loadUser = async (req, res) => {
     const user = await User.findOne({
       where: { id },
       attributes: {
-        exclude: ['createdAt', 'updatedAt', 'password'],
+        exclude: ['updatedAt', 'password'],
       },
       include: [
         {
@@ -202,12 +202,12 @@ exports.loadUser = async (req, res) => {
             {
               model: User,
               as: 'offeredTo',
-              attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
+              attributes: { exclude: ['updatedAt', 'password'] },
             },
             {
               model: User,
               as: 'orderedBy',
-              attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
+              attributes: { exclude: ['updatedAt', 'password'] },
             },
           ],
         },
@@ -226,12 +226,12 @@ exports.loadUser = async (req, res) => {
             {
               model: User,
               as: 'offeredTo',
-              attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
+              attributes: { exclude: ['updatedAt', 'password'] },
             },
             {
               model: User,
               as: 'orderedBy',
-              attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
+              attributes: { exclude: ['updatedAt', 'password'] },
             },
           ],
         },

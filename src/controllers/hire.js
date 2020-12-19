@@ -41,12 +41,12 @@ exports.approveHire = async (req, res) => {
         {
           model: User,
           as: 'offeredTo',
-          attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
+          attributes: { exclude: ['updatedAt', 'password'] },
         },
         {
           model: User,
           as: 'orderedBy',
-          attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
+          attributes: { exclude: ['updatedAt', 'password'] },
         },
       ],
     });
@@ -110,12 +110,12 @@ exports.rejectHire = async (req, res) => {
         {
           model: User,
           as: 'offeredTo',
-          attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
+          attributes: { exclude: ['updatedAt', 'password'] },
         },
         {
           model: User,
           as: 'orderedBy',
-          attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
+          attributes: { exclude: ['updatedAt', 'password'] },
         },
       ],
     });
@@ -173,12 +173,12 @@ exports.createHire = async (req, res) => {
         {
           model: User,
           as: 'offeredTo',
-          attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
+          attributes: { exclude: ['updatedAt', 'password'] },
         },
         {
           model: User,
           as: 'orderedBy',
-          attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
+          attributes: { exclude: ['updatedAt', 'password'] },
         },
       ],
     });
@@ -242,12 +242,12 @@ exports.completeHire = async (req, res) => {
         {
           model: User,
           as: 'offeredTo',
-          attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
+          attributes: { exclude: ['updatedAt', 'password'] },
         },
         {
           model: User,
           as: 'orderedBy',
-          attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
+          attributes: { exclude: ['updatedAt', 'password'] },
         },
       ],
     });
