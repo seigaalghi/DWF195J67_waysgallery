@@ -7,9 +7,14 @@ import Loading from '../Loading';
 import Contents from '../home/Contents';
 import { follow, unfollow } from '../../redux/action/auth';
 import { loadPostByUser } from '../../redux/action/post';
+import ImageModal from './ImageModal';
 
 const Profile = ({ loadProfileById, profile: { loading, profile }, post, auth, follow, unfollow, loadPostByUser }) => {
   const { id } = useParams();
+  const [image, setImage] = useState({
+    isOpen: false,
+    image: '',
+  });
   const [page, setPage] = useState({
     page: 1,
     count: 3,
@@ -28,6 +33,7 @@ const Profile = ({ loadProfileById, profile: { loading, profile }, post, auth, f
   ) : (
     <div className='profile-container'>
       <Navbar />
+      <ImageModal image={image} close={() => setImage({ isOpen: false, image: '' })} />
       <div className='greeting'>
         <img src={profile.avatar} alt='avatar' className='avatar' />
         <h2>{profile.name}</h2>
@@ -57,14 +63,14 @@ const Profile = ({ loadProfileById, profile: { loading, profile }, post, auth, f
       </div>
       {profile.arts.length > 0 ? (
         <div className='art'>
-          <img src={profile.arts[profile.arts.length - 1].art} alt='art' />{' '}
+          <img src={profile.arts[0].art} alt='art' onClick={() => setImage({ isOpen: true, image: profile.arts[0].art })} />{' '}
         </div>
       ) : null}
       <div className='arts-container'>
         <h2>{auth.user.id === parseInt(id) ? 'My Arts' : `${profile.name}'s Arts`}</h2>
         <div className='arts'>
           {profile.arts.map((art) => (
-            <img src={art.art} alt='art' key={art.id} />
+            <img src={art.art} alt='art' key={art.id} onClick={() => setImage({ isOpen: true, image: art.art })} />
           ))}
         </div>
       </div>
