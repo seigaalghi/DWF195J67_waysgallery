@@ -147,7 +147,8 @@ small {
   bottom: 0px;
   right: 0px;
   left: 0px;
-  background-image: url(./images/Assets.svg), url(./images/Vector1.svg), url(./images/Vector2.svg), url(./images/Vector3.svg);
+  background-image: url(./images/Assets.svg), url(./images/Vector1.svg), url(./images/Vector2.svg),
+    url(./images/Vector3.svg);
   background-repeat: no-repeat;
   background-position: 80%, top left, bottom left, bottom right;
   background-color: $third;
@@ -1257,7 +1258,6 @@ small {
   justify-content: center;
   .approvement {
     width: 600px;
-    height: 300px;
     background-color: white;
     padding: 50px;
     border-radius: 10px;
