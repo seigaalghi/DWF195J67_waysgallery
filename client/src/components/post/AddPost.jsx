@@ -17,8 +17,6 @@ const AddPost = ({ addPost, history }) => {
     addPost(values, history);
   };
 
-  const history = useHistory();
-
   const validationSchema = Yup.object({
     photos: Yup.array().required('Please select at least one photo'),
     title: Yup.string().required('Title is Required'),
