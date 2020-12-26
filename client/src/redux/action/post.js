@@ -1,4 +1,12 @@
-import { LOAD_POSTS, LOAD_POST, ADD_POST, LIKE_POST, DISLIKE_POST, COMMENT_POST, DELETE_COMMENT } from '../types';
+import {
+  LOAD_POSTS,
+  LOAD_POST,
+  ADD_POST,
+  LIKE_POST,
+  DISLIKE_POST,
+  COMMENT_POST,
+  DELETE_COMMENT,
+} from '../types';
 import axios from 'axios';
 import { setAlert, setUpload } from './alert';
 
@@ -72,7 +80,7 @@ export const loadPostByUser = (limit, userId) => async (dispatch) => {
   }
 };
 
-export const addPost = (data) => async (dispatch) => {
+export const addPost = (data, history) => async (dispatch) => {
   const { photos, title, description } = data;
   const formData = new FormData();
   formData.append('photos', photos[0]);
@@ -100,6 +108,7 @@ export const addPost = (data) => async (dispatch) => {
       payload: res.data.data.post,
     });
     dispatch(setAlert(res.data.message, 'success'));
+    history.push('/');
   } catch (error) {
     if (error.response) {
       if (error.response.data.message) {

@@ -4,16 +4,14 @@ import { editProfile, addArt } from '../../redux/action/auth';
 import Navbar from '../navbar/Navbar';
 import Dropzone from 'react-dropzone';
 import Icon from '../iconcomp/Icon';
-import { useHistory } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
-const AddPost = ({ auth: { loading, user }, editProfile, addArt }) => {
+const AddPost = ({ auth: { loading, user }, editProfile, addArt, history }) => {
   const [formData, setFormData] = useState({
     name: '',
     avatar: '',
     greeting: '',
   });
-
-  const history = useHistory();
 
   useEffect(() => {
     if (user || !loading) {
@@ -96,4 +94,4 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, { editProfile, addArt })(AddPost);
+export default connect(mapStateToProps, { editProfile, addArt })(withRouter(AddPost));

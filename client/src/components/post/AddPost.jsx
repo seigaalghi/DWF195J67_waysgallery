@@ -5,17 +5,16 @@ import { addPost } from '../../redux/action/post';
 import { connect } from 'react-redux';
 import Navbar from '../navbar/Navbar';
 import * as Yup from 'yup';
-import { useHistory } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
-const AddPost = ({ addPost }) => {
+const AddPost = ({ addPost, history }) => {
   const initialValues = {
     photos: ['', '', '', '', ''],
     title: '',
     description: '',
   };
   const onSubmit = (values) => {
-    addPost(values);
-    history.push('/');
+    addPost(values, history);
   };
 
   const history = useHistory();
@@ -34,15 +33,50 @@ const AddPost = ({ addPost }) => {
           return (
             <Form className='form'>
               <div className='file-input'>
-                <FormController control='file' currentvalue={formik.values.photos[0]} name='photos[0]' label='Photos' placeholder='Photos' />
-                <FormController control='file' currentvalue={formik.values.photos[1]} name='photos[1]' label='Photos' placeholder='Photos' />
-                <FormController control='file' currentvalue={formik.values.photos[2]} name='photos[2]' label='Photos' placeholder='Photos' />
-                <FormController control='file' currentvalue={formik.values.photos[3]} name='photos[3]' label='Photos' placeholder='Photos' />
-                <FormController control='file' currentvalue={formik.values.photos[4]} name='photos[4]' label='Photos' placeholder='Photos' />
+                <FormController
+                  control='file'
+                  currentvalue={formik.values.photos[0]}
+                  name='photos[0]'
+                  label='Photos'
+                  placeholder='Photos'
+                />
+                <FormController
+                  control='file'
+                  currentvalue={formik.values.photos[1]}
+                  name='photos[1]'
+                  label='Photos'
+                  placeholder='Photos'
+                />
+                <FormController
+                  control='file'
+                  currentvalue={formik.values.photos[2]}
+                  name='photos[2]'
+                  label='Photos'
+                  placeholder='Photos'
+                />
+                <FormController
+                  control='file'
+                  currentvalue={formik.values.photos[3]}
+                  name='photos[3]'
+                  label='Photos'
+                  placeholder='Photos'
+                />
+                <FormController
+                  control='file'
+                  currentvalue={formik.values.photos[4]}
+                  name='photos[4]'
+                  label='Photos'
+                  placeholder='Photos'
+                />
               </div>
               <div className='input-text'>
                 <FormController control='input' name='title' label='Title' placeholder='Title' />
-                <FormController control='textarea' name='description' label='Description' placeholder='Description' />
+                <FormController
+                  control='textarea'
+                  name='description'
+                  label='Description'
+                  placeholder='Description'
+                />
                 <button type='submit' value='Submit' className='btn btn-primary'>
                   Submit
                 </button>
@@ -58,4 +92,4 @@ const AddPost = ({ addPost }) => {
   );
 };
 
-export default connect(null, { addPost })(AddPost);
+export default connect(null, { addPost })(withRouter(AddPost));
