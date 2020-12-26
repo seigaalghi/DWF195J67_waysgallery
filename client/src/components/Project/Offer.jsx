@@ -21,7 +21,9 @@ const Offer = ({ auth: { loading, user }, approvement }) => {
     <Loading />
   ) : (
     <div>
-      {approve.isOpen ? <Approvement message={approve.message} approve={approve.approve} close={closeHandler} /> : null}
+      {approve.isOpen ? (
+        <Approvement message={approve.message} approve={approve.approve} close={closeHandler} />
+      ) : null}
       <table>
         <thead>
           <tr>
@@ -43,7 +45,12 @@ const Offer = ({ auth: { loading, user }, approvement }) => {
                 <span
                   className='color-complete'
                   onClick={() =>
-                    setApprove({ message: offer, isOpen: true, approve: offer.status === 'COMPLETED' ? null : () => approvement(offer.id) })
+                    setApprove({
+                      message: offer,
+                      isOpen: true,
+                      approve: offer.status === 'COMPLETED' ? null : () => approvement(offer.id),
+                      status: offer.status,
+                    })
                   }>
                   {offer.title}
                 </span>

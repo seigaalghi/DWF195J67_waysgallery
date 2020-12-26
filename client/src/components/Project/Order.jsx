@@ -45,7 +45,9 @@ const Order = ({ auth: { loading, user }, approveHire, rejectHire }) => {
               <td>{index + 1}</td>
               <td>{order.orderedBy.name}</td>
               <td>
-                <span onClick={() => setModal({ isOpen: true, message: order })}>{order.title}</span>
+                <span onClick={() => setModal({ isOpen: true, message: order })}>
+                  {order.title}
+                </span>
               </td>
               <td>{new Date(order.start).toLocaleDateString()}</td>
               <td>{new Date(order.end).toLocaleDateString()}</td>

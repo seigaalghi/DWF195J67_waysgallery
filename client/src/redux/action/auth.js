@@ -185,7 +185,7 @@ export const rejectHire = (id) => async (dispatch) => {
 // Send Project
 // =========================================================================================
 
-export const sendProject = (id, data) => async (dispatch) => {
+export const sendProject = (id, data, history) => async (dispatch) => {
   const { images, description } = data;
   const formData = new FormData();
   formData.append('images', images[0]);
@@ -211,6 +211,7 @@ export const sendProject = (id, data) => async (dispatch) => {
       payload: res.data.data.hire,
     });
     dispatch(setAlert(res.data.message, 'success'));
+    history.push('/order');
   } catch (error) {
     if (error.response) {
       if (error.response.data.message) {
