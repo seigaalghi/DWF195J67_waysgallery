@@ -1,7 +1,7 @@
 import React from 'react';
 import NumberFormat from 'react-number-format';
 
-const Approvement = ({ message, close, approve, status }) => {
+const Approvement = ({ message, close, approve }) => {
   return (
     <div className='approvement-container' onClick={close}>
       <div className='approvement'>
@@ -22,7 +22,7 @@ const Approvement = ({ message, close, approve, status }) => {
           <div className='btn btn-secondary' onClick={close}>
             Close
           </div>
-          {approve && status === 'WAITING' ? (
+          {approve ? (
             <div
               className='btn btn-primary'
               onClick={() => {

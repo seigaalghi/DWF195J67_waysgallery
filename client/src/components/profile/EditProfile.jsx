@@ -35,8 +35,7 @@ const AddPost = ({ auth: { loading, user }, editProfile, addArt }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    editProfile(formData);
-    history.goBack();
+    editProfile(formData, history);
   };
 
   return (
@@ -57,13 +56,30 @@ const AddPost = ({ auth: { loading, user }, editProfile, addArt }) => {
         </Dropzone>
         <form onSubmit={onSubmit} className='form'>
           <label className='file-input'>
-            {formData.avatar ? <img src={URL.createObjectURL(formData.avatar)} alt='avatar' /> : <Icon icon='far fa-user' />}
+            {formData.avatar ? (
+              <img src={URL.createObjectURL(formData.avatar)} alt='avatar' />
+            ) : (
+              <Icon icon='far fa-user' />
+            )}
             <input type='file' name='avatar' onChange={onChange} className='input' />
           </label>
           <label>Name</label>
-          <input type='text' name='name' onChange={onChange} className='input' placeholder='Name' value={formData.name} />
+          <input
+            type='text'
+            name='name'
+            onChange={onChange}
+            className='input'
+            placeholder='Name'
+            value={formData.name}
+          />
           <label>Greeting</label>
-          <textarea name='greeting' onChange={onChange} className='input' placeholder='Greeting' value={formData.greeting} />
+          <textarea
+            name='greeting'
+            onChange={onChange}
+            className='input'
+            placeholder='Greeting'
+            value={formData.greeting}
+          />
           <button type='submit' value='Submit' className='btn btn-primary'>
             Submit
           </button>

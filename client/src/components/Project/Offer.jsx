@@ -11,6 +11,7 @@ const Offer = ({ auth: { loading, user }, approvement }) => {
     message: {},
     isOpen: false,
     approve: null,
+    status: '',
   });
   const closeHandler = (e) => {
     if (e.target === e.currentTarget) {
@@ -48,8 +49,7 @@ const Offer = ({ auth: { loading, user }, approvement }) => {
                     setApprove({
                       message: offer,
                       isOpen: true,
-                      approve: offer.status === 'COMPLETED' ? null : () => approvement(offer.id),
-                      status: offer.status,
+                      approve: offer.status !== 'WAITING' ? null : () => approvement(offer.id),
                     })
                   }>
                   {offer.title}

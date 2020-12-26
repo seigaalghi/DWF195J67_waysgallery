@@ -211,7 +211,7 @@ export const sendProject = (id, data, history) => async (dispatch) => {
       payload: res.data.data.hire,
     });
     dispatch(setAlert(res.data.message, 'success'));
-    history.push('/order');
+    history.goBack();
   } catch (error) {
     if (error.response) {
       if (error.response.data.message) {
@@ -253,7 +253,7 @@ export const addHiring = (id, data) => async (dispatch) => {
 // Edit Profile
 // =====================================================================
 
-export const editProfile = (data) => async (dispatch) => {
+export const editProfile = (data, history) => async (dispatch) => {
   const { name, greeting, avatar } = data;
   const formData = new FormData();
   formData.append('name', name);
@@ -277,6 +277,7 @@ export const editProfile = (data) => async (dispatch) => {
       payload: res.data.data.user,
     });
     dispatch(setAlert(res.data.message, 'success'));
+    history.goBack();
   } catch (error) {
     if (error.response) {
       if (error.response.data.message) {
