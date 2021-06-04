@@ -14,8 +14,13 @@
     "dialect": "mysql"
   },
   "production": {
-    "use_env_variable": "DATABASE_URL_EX",
+    "use_env_variable": "DATABASE_URL",
     "dialect": "postgres",
-    "protocol": "postgres"
+    "protocol": "postgres",
+    "dialectOptions": {
+      "ssl": {
+        "rejectUnauthorized": false
+      }
+    }
   }
 }
